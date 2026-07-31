@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Albert López Espinosa | Administrador de Sistemas</title>
+
+  <!-- Hoja de estilos principal -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ======================= -->
+  <!-- MENÚ DE NAVEGACIÓN FIJO -->
+  <!-- ======================= -->
+  <header class="navbar">
+    <nav class="navbar__nav">
+      <a href="#inicio" class="navbar__logo">Albert López</a>
+      <ul class="navbar__links">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#sobre-mi">Sobre mí</a></li>
+        <li><a href="#aptitudes">Aptitudes</a></li>
+        <li><a href="#series">Series</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ======================= -->
+    <!-- 1. SECCIÓN INICIO -->
+    <!-- ======================= -->
+    <section id="inicio" class="hero">
+      <div class="hero__content">
+        <h1 class="hero__nombre">Albert López Espinosa</h1>
+        <p class="hero__titular">Administrador de Sistemas</p>
+        <a href="#series" class="btn btn--primary">Ver series de vídeos</a>
+      </div>
+    </section>
+
+    <!-- ======================= -->
+    <!-- 2. SECCIÓN SOBRE MÍ -->
+    <!-- ======================= -->
+    <section id="sobre-mi" class="section">
+      <h2 class="section__titulo">Sobre mí</h2>
+      <p class="section__texto">
+        Administrador de Sistemas especializado en Windows Server, Linux, Active Directory y
+        administración de redes. Este portfolio reúne series de videotutoriales donde documento
+        procesos de administración de sistemas paso a paso — la primera, dedicada a Windows
+        Server 2022, con más ámbitos IT por llegar.
+      </p>
+    </section>
+
+    <!-- ======================= -->
+    <!-- 3. SECCIÓN APTITUDES TÉCNICAS -->
+    <!-- ======================= -->
+    <section id="aptitudes" class="section">
+      <h2 class="section__titulo">Aptitudes técnicas</h2>
+
+      <div class="aptitudes__grid">
+
+        <!-- Bloque 1: Sistemas y administración -->
+        <div class="aptitud-card">
+          <h3 class="aptitud-card__titulo">Sistemas y administración</h3>
+          <ul class="aptitud-card__lista">
+            <li>Windows Server</li>
+            <li>Linux (Ubuntu, Debian)</li>
+            <li>Active Directory</li>
+            <li>GPOs</li>
+            <li>DNS</li>
+            <li>DHCP</li>
+            <li>Virtualización (VMware, Hyper-V)</li>
+          </ul>
+        </div>
+
+        <!-- Bloque 2: Redes e infraestructura -->
+        <div class="aptitud-card">
+          <h3 class="aptitud-card__titulo">Redes e infraestructura</h3>
+          <ul class="aptitud-card__lista">
+            <li>Routers, switches y puntos de acceso</li>
+            <li>Cableado estructurado LAN/WAN</li>
+          </ul>
+        </div>
+
+        <!-- Bloque 3: Soporte técnico y hardware -->
+        <div class="aptitud-card">
+          <h3 class="aptitud-card__titulo">Soporte técnico y hardware</h3>
+          <ul class="aptitud-card__lista">
+            <li>Help Desk remoto y presencial</li>
+            <li>Diagnóstico y resolución de incidencias hardware/software</li>
+            <li>Montaje y mantenimiento de PCs</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================= -->
+    <!-- 4. SECCIÓN SERIES -->
+    <!-- ======================= -->
+    <section id="series" class="section">
+      <h2 class="section__titulo">Series</h2>
+      <p class="section__texto">
+        Series de videotutoriales donde documento procesos de administración de sistemas
+        paso a paso.
+      </p>
+
+      <div class="series__grid">
+
+        <!-- Tarjeta de la serie: Windows Server 2022 -->
+        <!-- Para añadir una nueva serie en el futuro, copia este bloque <a> y cambia
+             el href, la imagen (si se añade), el título y la descripción. -->
+        <a href="series/windows-server-2022.html" class="serie-card">
+          <h3 class="serie-card__titulo">Windows Server 2022</h3>
+          <p class="serie-card__descripcion">
+            Configuración y administración paso a paso: Active Directory, DHCP, DNS,
+            recursos compartidos, copias de seguridad, GPOs y mucho más.
+          </p>
+          <span class="serie-card__enlace">Ver vídeos →</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ======================= -->
+    <!-- 5. SECCIÓN CONTACTO -->
+    <!-- ======================= -->
+    <section id="contacto" class="section">
+      <h2 class="section__titulo">Contacto</h2>
+
+      <ul class="contacto__lista">
+        <li>
+          <span class="contacto__etiqueta">Email:</span>
+          <a href="mailto:albertlopezespinosa@gmail.com">albertlopezespinosa@gmail.com</a>
+        </li>
+        <li>
+          <span class="contacto__etiqueta">LinkedIn:</span>
+          <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer">
+            linkedin.com/in/alopezespinosa
+          </a>
+        </li>
+        <li>
+          <span class="contacto__etiqueta">Ubicación:</span>
+          Montcada i Reixac
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Albert López Espinosa</p>
+  </footer>
+
+  <!-- JavaScript principal (scroll suave del menú) -->
+  <script src="js/main.js"></script>
+</body>
+</html>

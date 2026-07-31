@@ -1,0 +1,368 @@
+/* =========================================================
+   VARIABLES DE COLOR Y TIPOGRAFÍA
+   Definimos aquí los colores principales del sitio para poder
+   cambiar el estilo fácilmente más adelante sin tocar el resto del CSS.
+   ========================================================= */
+:root {
+  --color-fondo: #0f1419;
+  --color-fondo-alterno: #161c24;
+  --color-texto: #e6e8eb;
+  --color-texto-suave: #9aa5b1;
+  --color-acento: #4dd0e1;
+  --color-borde: #2a323d;
+
+  --fuente-principal: "Segoe UI", Roboto, Arial, sans-serif;
+
+  --ancho-maximo: 1100px;
+}
+
+/* =========================================================
+   RESET BÁSICO
+   Quitamos márgenes/paddings por defecto del navegador para
+   tener un punto de partida consistente en todos los navegadores.
+   ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Hace que el scroll hacia las secciones (#ancla) sea suave */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-acento);
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* =========================================================
+   MENÚ DE NAVEGACIÓN FIJO
+   ========================================================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(15, 20, 25, 0.95);
+  border-bottom: 1px solid var(--color-borde);
+  z-index: 100;
+}
+
+.navbar__nav {
+  max-width: var(--ancho-maximo);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.navbar__logo {
+  font-weight: bold;
+  color: var(--color-texto);
+  font-size: 1.1rem;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar__links a {
+  color: var(--color-texto-suave);
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.navbar__links a:hover {
+  color: var(--color-acento);
+}
+
+/* En pantallas pequeñas, los enlaces del menú se reducen para que quepan */
+@media (max-width: 600px) {
+  .navbar__nav {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .navbar__links {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* =========================================================
+   UTILIDAD: separación bajo el menú fijo
+   Como el menú es "fixed", el contenido de main necesita un
+   margen superior para no quedar tapado por el menú.
+   ========================================================= */
+main {
+  padding-top: 4.5rem;
+}
+
+@media (max-width: 600px) {
+  main {
+    padding-top: 6rem;
+  }
+}
+
+/* =========================================================
+   SECCIÓN INICIO (HERO)
+   ========================================================= */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.hero__content {
+  max-width: 700px;
+}
+
+.hero__nombre {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero__titular {
+  font-size: 1.25rem;
+  color: var(--color-acento);
+  margin-bottom: 2rem;
+}
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn--primary {
+  background-color: var(--color-acento);
+  color: var(--color-fondo);
+}
+
+.btn--primary:hover {
+  background-color: #7ce0ec;
+}
+
+/* =========================================================
+   SECCIONES GENERALES (Sobre mí, Aptitudes, Series, Contacto)
+   ========================================================= */
+.section {
+  max-width: var(--ancho-maximo);
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.section__titulo {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--color-acento);
+  padding-left: 0.75rem;
+}
+
+.section__texto {
+  color: var(--color-texto-suave);
+  max-width: 750px;
+}
+
+/* =========================================================
+   APTITUDES TÉCNICAS
+   ========================================================= */
+.aptitudes__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.aptitud-card {
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.aptitud-card__titulo {
+  color: var(--color-acento);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.aptitud-card__lista li {
+  color: var(--color-texto-suave);
+  padding: 0.25rem 0;
+}
+
+/* En tablet/móvil, las tarjetas de aptitudes pasan a una sola columna */
+@media (max-width: 800px) {
+  .aptitudes__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   SERIES (tarjetas)
+   ========================================================= */
+.series__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.serie-card {
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: var(--color-texto);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.serie-card:hover {
+  border-color: var(--color-acento);
+  transform: translateY(-3px);
+}
+
+.serie-card__titulo {
+  margin-bottom: 0.75rem;
+  color: var(--color-texto);
+}
+
+.serie-card__descripcion {
+  color: var(--color-texto-suave);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.serie-card__enlace {
+  color: var(--color-acento);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+/* =========================================================
+   CONTACTO
+   ========================================================= */
+.contacto__lista li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.contacto__etiqueta {
+  color: var(--color-texto-suave);
+  margin-right: 0.5rem;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--color-texto-suave);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+/* =========================================================
+   PÁGINA DE SERIE (series/*.html)
+   Estilos para la lista de vídeos dentro de cada serie.
+   ========================================================= */
+.serie-header {
+  max-width: var(--ancho-maximo);
+  margin: 0 auto;
+  padding: 4rem 1.5rem 1rem;
+}
+
+.serie-header__volver {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--color-texto-suave);
+}
+
+.serie-header__volver:hover {
+  color: var(--color-acento);
+}
+
+.serie-header__titulo {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.serie-header__descripcion {
+  color: var(--color-texto-suave);
+  max-width: 750px;
+  margin-bottom: 1rem;
+}
+
+.videos__lista {
+  max-width: var(--ancho-maximo);
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.video-item {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  transition: border-color 0.2s ease;
+}
+
+.video-item:hover {
+  border-color: var(--color-acento);
+}
+
+.video-item__numero {
+  color: var(--color-acento);
+  font-weight: bold;
+  min-width: 1.5rem;
+}
+
+.video-item__titulo {
+  color: var(--color-texto);
+}
+
+/* En móvil, cada vídeo de la lista apila el número encima del título */
+@media (max-width: 600px) {
+  .video-item {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows Server 2022 | Albert López Espinosa</title>
+
+  <!-- Ojo: esta página está dentro de series/, por eso la ruta sube un nivel con "../" -->
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Mismo menú de navegación fijo que en index.html, pero apuntando de vuelta
+       a las secciones de la página principal -->
+  <header class="navbar">
+    <nav class="navbar__nav">
+      <a href="../index.html#inicio" class="navbar__logo">Albert López</a>
+      <ul class="navbar__links">
+        <li><a href="../index.html#inicio">Inicio</a></li>
+        <li><a href="../index.html#sobre-mi">Sobre mí</a></li>
+        <li><a href="../index.html#aptitudes">Aptitudes</a></li>
+        <li><a href="../index.html#series">Series</a></li>
+        <li><a href="../index.html#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="serie-header">
+      <a href="../index.html#series" class="serie-header__volver">&larr; Volver a Series</a>
+
+      <h1 class="serie-header__titulo">Windows Server 2022</h1>
+      <p class="serie-header__descripcion">
+        Serie de videotutoriales sobre configuración y administración de Windows Server 2022:
+        Active Directory, DHCP, DNS, recursos compartidos, copias de seguridad, GPOs y más.
+      </p>
+      <a href="https://www.youtube.com/playlist?list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN"
+         target="_blank" rel="noopener noreferrer">
+        Ver playlist completa en YouTube →
+      </a>
+    </section>
+
+    <!-- Lista de vídeos de la serie.
+         Para añadir un vídeo nuevo, copia un bloque <li class="video-item"> y
+         cambia el número, el enlace y el título. -->
+    <ol class="videos__lista">
+
+      <li class="video-item">
+        <span class="video-item__numero">1.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=yqFu7tcqLF4&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN"
+           target="_blank" rel="noopener noreferrer">
+          Cómo configurar Active Directory en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">2.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=oQbRMGpqTxA&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=2"
+           target="_blank" rel="noopener noreferrer">
+          Cómo configurar DHCP en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">3.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=yEeeTGqQ_ng&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=3"
+           target="_blank" rel="noopener noreferrer">
+          Cómo configurar DNS en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">4.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=UE1IEw0H2co&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=4"
+           target="_blank" rel="noopener noreferrer">
+          Cómo compartir carpetas en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">5.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=JmQRWjy9Hok&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=5"
+           target="_blank" rel="noopener noreferrer">
+          Cómo realizar, restaurar y validar una copia de seguridad en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">6.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=ZLct-AAB_DU&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=6"
+           target="_blank" rel="noopener noreferrer">
+          Cómo aplicar políticas de grupo (GPO) en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">7.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=JGjwuvPJN_c&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=7"
+           target="_blank" rel="noopener noreferrer">
+          Cómo configurar la redirección de carpetas en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">8.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=a1Cks29_qwc&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=8"
+           target="_blank" rel="noopener noreferrer">
+          Cómo configurar perfiles móviles en Windows Server 2022
+        </a>
+      </li>
+
+      <li class="video-item">
+        <span class="video-item__numero">9.</span>
+        <a class="video-item__titulo"
+           href="https://www.youtube.com/watch?v=MQRrPL2UWbU&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=9"
+           target="_blank" rel="noopener noreferrer">
+          ¿Cómo promover un servidor Windows Server 2022 a controlador de dominio adicional?
+        </a>
+      </li>
+
+    </ol>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Albert López Espinosa</p>
+  </footer>
+
+  <!-- Esta página no necesita el script de scroll suave (no tiene menú de anclas
+       internas), pero lo incluimos por si en el futuro se añade algo interactivo -->
+  <script src="../js/main.js"></script>
+</body>
+</html>
