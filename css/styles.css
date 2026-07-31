@@ -337,6 +337,37 @@ main {
 }
 
 /* =========================================================
+   FORMACIÓN ACADÉMICA
+   Reutiliza la clase .aptitud-card (mismo fondo, borde, padding y
+   tipografía) para mantener el mismo estilo visual de tarjeta;
+   solo cambia el layout de la grid (2 columnas en vez de 3).
+   ========================================================= */
+.formacion__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.formacion-card__programa {
+  color: var(--color-texto-suave);
+  margin-bottom: 0.5rem;
+}
+
+.formacion-card__centro {
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* En tablet/móvil, las tarjetas de formación pasan a una sola columna */
+@media (max-width: 800px) {
+  .formacion__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
    SERIES (tarjetas)
    ========================================================= */
 .series__grid {
