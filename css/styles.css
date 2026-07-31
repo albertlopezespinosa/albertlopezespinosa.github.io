@@ -4,16 +4,36 @@
    cambiar el estilo fácilmente más adelante sin tocar el resto del CSS.
    ========================================================= */
 :root {
-  --color-fondo: #0f1419;
-  --color-fondo-alterno: #161c24;
-  --color-texto: #e6e8eb;
-  --color-texto-suave: #9aa5b1;
-  --color-acento: #4dd0e1;
-  --color-borde: #2a323d;
+  --color-fondo: #ffffff;
+  --color-fondo-alterno: #f2f5f7;
+  --color-texto: #111827;
+  --color-texto-suave: #6b7280;
+  --color-acento: #14495c;
+  --color-borde: #e5e7eb;
+
+  /* Versión "r, g, b" del color de fondo, para poder usarlo con
+     transparencia en rgba() (la usa el fondo del nav) */
+  --color-fondo-rgb: 255, 255, 255;
+
+  /* Versión "r, g, b" del acento, para la sombra tintada de las tarjetas */
+  --color-acento-rgb: 20, 73, 92;
 
   --fuente-principal: "Segoe UI", Roboto, Arial, sans-serif;
 
   --ancho-maximo: 1100px;
+}
+
+/* Modo oscuro: mismo set de variables, valores distintos.
+   Se activa poniendo data-theme="dark" en el <body> (lo hace js/main.js) */
+body[data-theme="dark"] {
+  --color-fondo: #101820;
+  --color-fondo-alterno: #1b2732;
+  --color-texto: #eef3f5;
+  --color-texto-suave: #93a4ad;
+  --color-acento: #4f9fbd;
+  --color-borde: #2a3942;
+  --color-fondo-rgb: 16, 24, 32;
+  --color-acento-rgb: 79, 159, 189;
 }
 
 /* =========================================================
@@ -37,6 +57,8 @@ body {
   background-color: var(--color-fondo);
   color: var(--color-texto);
   line-height: 1.6;
+  /* Transición suave al cambiar de modo claro/oscuro */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
@@ -46,6 +68,19 @@ a {
 
 ul {
   list-style: none;
+}
+
+/* =========================================================
+   FOCO ACCESIBLE (navegación con teclado)
+   :focus-visible solo se activa cuando el elemento recibe el foco por
+   teclado (Tab), no al hacer click con el ratón — así el outline no
+   aparece "sin motivo" en clicks de ratón, pero sí guía a quien navega
+   con teclado.
+   ========================================================= */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
 }
 
 img {
@@ -61,9 +96,12 @@ img {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(15, 20, 25, 0.95);
+  /* rgba en vez de var(--color-fondo) directo: así el nav mantiene su
+     ligera transparencia en ambos modos, usando --color-fondo-rgb */
+  background-color: rgba(var(--color-fondo-rgb), 0.95);
   border-bottom: 1px solid var(--color-borde);
   z-index: 100;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .navbar__nav {
@@ -76,9 +114,28 @@ img {
 }
 
 .navbar__logo {
-  font-weight: bold;
-  color: var(--color-texto);
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Agrupa los links y el botón de tema a la derecha del logo */
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Avatar circular del menú: recorta la foto (medio cuerpo) centrada en la
+   cara sin deformarla. Usamos box-shadow en vez de border para el anillo
+   de acento: no compite por espacio con border-radius y se ve más limpio
+   en las esquinas de un círculo */
+.navbar__logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--color-fondo);
+  box-shadow: 0 0 0 2px var(--color-acento);
 }
 
 .navbar__links {
@@ -96,12 +153,57 @@ img {
   color: var(--color-acento);
 }
 
+/* Botón de modo claro/oscuro */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--color-acento);
+}
+
+.theme-toggle__icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Por defecto (modo claro) se ve la luna; en modo oscuro se ve el sol.
+   El JS solo pone/quita data-theme="dark" en el body; quién se ve lo
+   decide este CSS */
+.theme-toggle__icon--sun {
+  display: none;
+}
+
+body[data-theme="dark"] .theme-toggle__icon--moon {
+  display: none;
+}
+
+body[data-theme="dark"] .theme-toggle__icon--sun {
+  display: block;
+}
+
 /* En pantallas pequeñas, los enlaces del menú se reducen para que quepan */
 @media (max-width: 600px) {
   .navbar__nav {
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
+  }
+
+  .navbar__right {
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .navbar__links {
@@ -161,16 +263,20 @@ main {
   padding: 0.75rem 1.75rem;
   border-radius: 6px;
   font-weight: bold;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.02);
 }
 
 .btn--primary {
-  background-color: var(--color-acento);
+  background-color: var(--color-texto);
   color: var(--color-fondo);
 }
 
 .btn--primary:hover {
-  background-color: #7ce0ec;
+  background-color: var(--color-acento);
 }
 
 /* =========================================================
@@ -209,6 +315,7 @@ main {
   border: 1px solid var(--color-borde);
   border-radius: 8px;
   padding: 1.5rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .aptitud-card__titulo {
@@ -245,12 +352,14 @@ main {
   border-radius: 8px;
   padding: 1.5rem;
   color: var(--color-texto);
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+              border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .serie-card:hover {
   border-color: var(--color-acento);
-  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(var(--color-acento-rgb), 0.25);
+  transform: translateY(-4px);
 }
 
 .serie-card__titulo {
@@ -274,13 +383,33 @@ main {
    CONTACTO
    ========================================================= */
 .contacto__lista li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid var(--color-borde);
 }
 
+.contacto__icono {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-texto-suave);
+  transition: color 0.2s ease;
+}
+
+/* Hover en toda la fila (no solo en el link) para que el icono
+   acompañe al resto de elementos interactivos del sitio */
+.contacto__lista li:hover .contacto__icono {
+  color: var(--color-acento);
+}
+
 .contacto__etiqueta {
   color: var(--color-texto-suave);
-  margin-right: 0.5rem;
+}
+
+.contacto__cv-btn {
+  margin-top: 2rem;
 }
 
 /* =========================================================
@@ -289,9 +418,36 @@ main {
 .footer {
   text-align: center;
   padding: 1.5rem;
+  background-color: var(--color-fondo-alterno);
   color: var(--color-texto-suave);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   border-top: 1px solid var(--color-borde);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer__copy {
+  margin-bottom: 0.75rem;
+}
+
+.footer__social {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.footer__social-link {
+  display: inline-flex;
+  color: var(--color-texto-suave);
+  transition: color 0.2s ease;
+}
+
+.footer__social-link:hover {
+  color: var(--color-acento);
+}
+
+.footer__social-icon {
+  width: 18px;
+  height: 18px;
 }
 
 /* =========================================================
@@ -342,7 +498,7 @@ main {
   border: 1px solid var(--color-borde);
   border-radius: 8px;
   padding: 1rem 1.5rem;
-  transition: border-color 0.2s ease;
+  transition: background-color 0.3s ease, border-color 0.2s ease;
 }
 
 .video-item:hover {

@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Albert López Espinosa | Administrador de Sistemas</title>
+  <meta name="description" content="Portfolio de Albert López Espinosa, Administrador de Sistemas especializado en Windows Server, Linux y administración de redes. Series de videotutoriales IT.">
+
+  <!-- Open Graph: cómo se ve el link al compartirlo en redes/LinkedIn -->
+  <meta property="og:title" content="Albert López Espinosa | Administrador de Sistemas">
+  <meta property="og:description" content="Portfolio de Albert López Espinosa, Administrador de Sistemas especializado en Windows Server, Linux y administración de redes. Series de videotutoriales IT.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- Hoja de estilos principal -->
   <link rel="stylesheet" href="css/styles.css">
@@ -15,14 +24,41 @@
   <!-- ======================= -->
   <header class="navbar">
     <nav class="navbar__nav">
-      <a href="#inicio" class="navbar__logo">Albert López</a>
-      <ul class="navbar__links">
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#sobre-mi">Sobre mí</a></li>
-        <li><a href="#aptitudes">Aptitudes</a></li>
-        <li><a href="#series">Series</a></li>
-        <li><a href="#contacto">Contacto</a></li>
-      </ul>
+      <a href="#inicio" class="navbar__logo">
+        <img src="assets/img/albert.png" alt="Albert López" class="navbar__logo-img">
+      </a>
+
+      <div class="navbar__right">
+        <ul class="navbar__links">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
+          <li><a href="#aptitudes">Aptitudes</a></li>
+          <li><a href="#series">Series</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+
+        <!-- Botón para alternar entre modo claro y oscuro.
+             Qué icono se ve (luna o sol) lo decide el CSS según
+             el atributo data-theme del body; el JS solo lo alterna. -->
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+      </div>
     </nav>
   </header>
 
@@ -64,13 +100,9 @@
         <div class="aptitud-card">
           <h3 class="aptitud-card__titulo">Sistemas y administración</h3>
           <ul class="aptitud-card__lista">
-            <li>Windows Server</li>
-            <li>Linux (Ubuntu, Debian)</li>
-            <li>Active Directory</li>
-            <li>GPOs</li>
-            <li>DNS</li>
-            <li>DHCP</li>
-            <li>Virtualización (VMware, Hyper-V)</li>
+            <li>Despliegue y administración de servidores Windows Server y Linux</li>
+            <li>Gestión de dominios mediante Active Directory y políticas de grupo (GPO)</li>
+            <li>Configuración de servicios de red (DNS, DHCP) y virtualización con VMware/Hyper-V</li>
           </ul>
         </div>
 
@@ -78,8 +110,8 @@
         <div class="aptitud-card">
           <h3 class="aptitud-card__titulo">Redes e infraestructura</h3>
           <ul class="aptitud-card__lista">
-            <li>Routers, switches y puntos de acceso</li>
-            <li>Cableado estructurado LAN/WAN</li>
+            <li>Diseño y configuración de infraestructura de red (routers, switches, puntos de acceso)</li>
+            <li>Instalación de cableado estructurado LAN/WAN</li>
           </ul>
         </div>
 
@@ -87,9 +119,9 @@
         <div class="aptitud-card">
           <h3 class="aptitud-card__titulo">Soporte técnico y hardware</h3>
           <ul class="aptitud-card__lista">
-            <li>Help Desk remoto y presencial</li>
-            <li>Diagnóstico y resolución de incidencias hardware/software</li>
-            <li>Montaje y mantenimiento de PCs</li>
+            <li>Resolución de incidencias hardware/software en entornos de producción</li>
+            <li>Soporte técnico Help Desk (remoto y presencial)</li>
+            <li>Montaje y mantenimiento de equipos</li>
           </ul>
         </div>
 
@@ -131,26 +163,75 @@
 
       <ul class="contacto__lista">
         <li>
+          <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 6-10 7L2 6"/>
+          </svg>
           <span class="contacto__etiqueta">Email:</span>
           <a href="mailto:albertlopezespinosa@gmail.com">albertlopezespinosa@gmail.com</a>
         </li>
         <li>
+          <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
           <span class="contacto__etiqueta">LinkedIn:</span>
           <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer">
             linkedin.com/in/alopezespinosa
           </a>
         </li>
         <li>
+          <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
           <span class="contacto__etiqueta">Ubicación:</span>
-          Montcada i Reixac
+          Montcada i Reixac, Barcelona
         </li>
       </ul>
+
+      <a href="assets/cv/Albert_Lopez_Espinosa_CV.pdf"
+         download="Albert_Lopez_Espinosa_CV.pdf"
+         class="btn btn--primary contacto__cv-btn">
+        Descargar CV
+      </a>
     </section>
 
   </main>
 
   <footer class="footer">
-    <p>&copy; 2026 Albert López Espinosa</p>
+    <p class="footer__copy">&copy; 2026 Albert López Espinosa</p>
+
+    <div class="footer__social">
+      <a href="mailto:albertlopezespinosa@gmail.com" class="footer__social-link" aria-label="Enviar email">
+        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 6-10 7L2 6"/>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer"
+         class="footer__social-link" aria-label="Perfil de LinkedIn">
+        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
+          <rect x="2" y="9" width="4" height="12"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+      <a href="https://www.youtube.com/@KernelDeAlbert" target="_blank" rel="noopener noreferrer"
+         class="footer__social-link" aria-label="Canal de YouTube">
+        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33Z"/>
+          <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+        </svg>
+      </a>
+    </div>
   </footer>
 
   <!-- JavaScript principal (scroll suave del menú) -->

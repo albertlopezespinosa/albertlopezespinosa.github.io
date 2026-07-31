@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <circle cx="20" cy="20" r="20" fill="#1a1a1a"/>
+  <text x="20" y="21" text-anchor="middle" dominant-baseline="central"
+        font-family="Segoe UI, Roboto, Arial, sans-serif" font-size="15"
+        font-weight="bold" fill="#fafaf8">AL</text>
+</svg>
