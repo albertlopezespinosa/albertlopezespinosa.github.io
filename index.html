@@ -33,6 +33,7 @@
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#sobre-mi">Sobre mí</a></li>
           <li><a href="#aptitudes">Aptitudes</a></li>
+          <li><a href="#certificaciones">Certificaciones</a></li>
           <li><a href="#formacion">Formación</a></li>
           <li><a href="#series">Series</a></li>
           <li><a href="#contacto">Contacto</a></li>
@@ -82,10 +83,10 @@
     <section id="sobre-mi" class="section">
       <h2 class="section__titulo">Sobre mí</h2>
       <p class="section__texto">
-        Administrador de Sistemas especializado en Windows Server, Linux, Active Directory y
-        administración de redes. Este portfolio reúne series de videotutoriales donde documento
-        procesos de administración de sistemas paso a paso — la primera, dedicada a Windows
-        Server 2022, con más ámbitos IT por llegar.
+        Administrador de Sistemas con experiencia en entornos on-premise y una creciente
+        orientación hacia tecnologías cloud. Este portfolio reúne series de
+        videotutoriales donde documento procesos de administración de sistemas paso a paso —
+        la primera, dedicada a Windows Server 2022, con más ámbitos IT por llegar.
       </p>
     </section>
 
@@ -101,9 +102,18 @@
         <div class="aptitud-card">
           <h3 class="aptitud-card__titulo">Sistemas y administración</h3>
           <ul class="aptitud-card__lista">
-            <li>Despliegue y administración de servidores Windows Server y Linux</li>
-            <li>Gestión de dominios mediante Active Directory y políticas de grupo (GPO)</li>
-            <li>Configuración de servicios de red (DNS, DHCP) y virtualización con VMware/Hyper-V</li>
+            <li>
+              Despliegue y administración de servidores Windows Server y Linux
+              <span class="aptitud-card__azure">Azure: Azure Virtual Machines</span>
+            </li>
+            <li>
+              Gestión de dominios mediante Active Directory y políticas de grupo (GPO)
+              <span class="aptitud-card__azure">Azure: Microsoft Entra ID / Intune</span>
+            </li>
+            <li>
+              Configuración de servicios de red (DNS, DHCP) y virtualización con VMware/Hyper-V
+              <span class="aptitud-card__azure">Azure: Azure DNS, Azure VNet</span>
+            </li>
           </ul>
         </div>
 
@@ -130,7 +140,26 @@
     </section>
 
     <!-- ======================= -->
-    <!-- 4. SECCIÓN FORMACIÓN ACADÉMICA -->
+    <!-- 4. SECCIÓN CERTIFICACIONES -->
+    <!-- ======================= -->
+    <section id="certificaciones" class="section">
+      <h2 class="section__titulo">Certificaciones</h2>
+
+      <div class="certificaciones__grid">
+
+        <!-- Tarjeta: AZ-900 -->
+        <!-- Para añadir una nueva certificación, copia este bloque <div> y cambia
+             el título y el estado. -->
+        <div class="aptitud-card certificacion-card">
+          <h3 class="aptitud-card__titulo">Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
+          <span class="certificacion-card__estado certificacion-card__estado--en-curso">En curso</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================= -->
+    <!-- 5. SECCIÓN FORMACIÓN ACADÉMICA -->
     <!-- ======================= -->
     <section id="formacion" class="section">
       <h2 class="section__titulo">Formación académica</h2>
@@ -155,7 +184,7 @@
     </section>
 
     <!-- ======================= -->
-    <!-- 5. SECCIÓN SERIES -->
+    <!-- 6. SECCIÓN SERIES -->
     <!-- ======================= -->
     <section id="series" class="section">
       <h2 class="section__titulo">Series</h2>
@@ -182,7 +211,7 @@
     </section>
 
     <!-- ======================= -->
-    <!-- 6. SECCIÓN CONTACTO -->
+    <!-- 7. SECCIÓN CONTACTO -->
     <!-- ======================= -->
     <section id="contacto" class="section">
       <h2 class="section__titulo">Contacto</h2>
