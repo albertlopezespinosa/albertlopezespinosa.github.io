@@ -606,3 +606,220 @@ main {
     gap: 0.25rem;
   }
 }
+
+/* =========================================================
+   WIDGET DE CHAT FLOTANTE
+   Burbuja fija en la esquina inferior derecha que abre una
+   ventana de chat conectada al backend en Cloudflare Workers
+   (ver js/chat-widget.js).
+   ========================================================= */
+.chat-widget {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 200;
+}
+
+.chat-widget__burbuja {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-acento);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(var(--color-acento-rgb), 0.4);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.chat-widget__burbuja:hover {
+  transform: scale(1.06);
+}
+
+.chat-widget__icono {
+  width: 26px;
+  height: 26px;
+}
+
+/* Por defecto (cerrado) se ve el icono de chat; abierto, el de cerrar.
+   Misma idea que el toggle de tema: el JS solo añade/quita la clase
+   "chat-widget--abierto", el CSS decide qué icono mostrar. */
+.chat-widget__icono--cerrar {
+  display: none;
+}
+
+.chat-widget--abierto .chat-widget__icono--chat {
+  display: none;
+}
+
+.chat-widget--abierto .chat-widget__icono--cerrar {
+  display: block;
+}
+
+.chat-widget__ventana {
+  position: absolute;
+  right: 0;
+  bottom: calc(56px + 1rem);
+  width: 340px;
+  max-width: calc(100vw - 2rem);
+  height: 460px;
+  max-height: calc(100vh - 8rem);
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.chat-widget__cabecera {
+  padding: 1rem 1.25rem;
+  background-color: var(--color-acento);
+  color: #fff;
+  font-weight: bold;
+}
+
+.chat-widget__mensajes {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.chat-widget__mensaje {
+  max-width: 80%;
+  padding: 0.55rem 0.85rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.chat-widget__mensaje--asistente {
+  align-self: flex-start;
+  background-color: var(--color-fondo-alterno);
+  color: var(--color-texto);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-widget__mensaje--usuario {
+  align-self: flex-end;
+  background-color: var(--color-acento);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* Error del backend (ej. límite de peticiones alcanzado): se muestra
+   como un mensaje amigable dentro del propio chat, nunca el error crudo */
+.chat-widget__mensaje--error {
+  align-self: flex-start;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* Indicador "escribiendo..." con 3 puntos animados */
+.chat-widget__puntos {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.chat-widget__punto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-texto-suave);
+  animation: chat-widget-parpadeo 1.4s infinite ease-in-out both;
+}
+
+.chat-widget__punto:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.chat-widget__punto:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes chat-widget-parpadeo {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.chat-widget__form {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+}
+
+.chat-widget__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 20px;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.chat-widget__input:focus {
+  outline: none;
+  border-color: var(--color-acento);
+}
+
+.chat-widget__enviar {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-acento);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.chat-widget__enviar svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chat-widget__enviar:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* En móvil, la ventana ocupa casi toda la pantalla en vez de un
+   recuadro flotante pequeño, sin tapar la burbuja ni salirse del viewport */
+@media (max-width: 480px) {
+  .chat-widget {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .chat-widget__ventana {
+    width: calc(100vw - 2rem);
+    height: calc(100vh - 7rem);
+    bottom: calc(56px + 0.75rem);
+  }
+}
