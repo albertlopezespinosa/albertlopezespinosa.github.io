@@ -49,7 +49,11 @@ function mostrarEscribiendo() {
   return burbuja;
 }
 
-// Abre o cierra la ventana de chat
+// Abre o cierra la ventana de chat. La visibilidad real la decide el CSS
+// a partir de la clase "chat-widget--abierto" en .chat-widget (misma
+// fuente de verdad que usa el icono burbuja/X); el atributo "hidden" solo
+// se mantiene en sync por semántica de accesibilidad (contenido oculto
+// para lectores de pantalla), el historial de mensajes no se toca aquí.
 function alternarVentana() {
   const abierta = contenedor.classList.toggle('chat-widget--abierto');
   ventana.hidden = !abierta;
