@@ -10,6 +10,7 @@
   --color-texto-suave: #6b7280;
   --color-acento: #14495c;
   --color-borde: #e5e7eb;
+  --color-exito: #16a34a;
 
   /* Versión "r, g, b" del color de fondo, para poder usarlo con
      transparencia en rgba() (la usa el fondo del nav) */
@@ -32,6 +33,9 @@ body[data-theme="dark"] {
   --color-texto-suave: #93a4ad;
   --color-acento: #4f9fbd;
   --color-borde: #2a3942;
+  /* Verde algo más claro que en modo claro, para mantener contraste
+     sobre el fondo oscuro */
+  --color-exito: #4ade80;
   --color-fondo-rgb: 16, 24, 32;
   --color-acento-rgb: 79, 159, 189;
 }
@@ -472,7 +476,7 @@ main {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.5rem 0;
+  padding: 0.35rem 0;
   border-bottom: 1px solid var(--color-borde);
 }
 
@@ -495,7 +499,141 @@ main {
 }
 
 .contacto__cv-btn {
+  /* Sin margin-top: el espacio hasta lo anterior lo reparte el
+     justify-content: space-between de .contacto__info */
+  align-self: flex-start;
+}
+
+/* Bloque de disponibilidad, entre la lista de contacto y el botón de CV.
+   El border-top hace de separador sutil, mismo estilo que ya se usa
+   entre los datos de contacto (border-bottom en .contacto__lista li) */
+.contacto__disponibilidad {
+  border-top: 1px solid var(--color-borde);
+  padding-top: 1rem;
+}
+
+.contacto__disponibilidad-estado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.contacto__punto-estado {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--color-exito);
+}
+
+.contacto__disponibilidad-texto {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-texto-suave);
+}
+
+/* Info (lista + CV) a la izquierda, formulario a la derecha. Ambas
+   columnas son tarjetas del mismo estilo y, al no limitar la altura de
+   la fila (sin align-items: start), se estiran a la misma altura: la
+   info reparte lista arriba / botón CV abajo con space-between para no
+   dejar hueco vacío. En móvil pasa a una sola columna, info primero */
+.contacto__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 2.5rem;
   margin-top: 2rem;
+}
+
+.contacto__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.contacto__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.contacto__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.contacto__campo label {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.contacto__opcional {
+  font-weight: normal;
+  color: var(--color-texto-suave);
+}
+
+.contacto__campo input,
+.contacto__campo textarea {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 6px;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.contacto__campo textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contacto__campo input:focus,
+.contacto__campo textarea:focus {
+  outline: none;
+  border-color: var(--color-acento);
+}
+
+.contacto__form-enviar {
+  align-self: flex-start;
+  border: none;
+  cursor: pointer;
+}
+
+.contacto__form-enviar:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.contacto__form-estado {
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+.contacto__form-estado--exito {
+  color: var(--color-exito);
+}
+
+.contacto__form-estado--error {
+  color: #dc3545;
+}
+
+@media (max-width: 800px) {
+  .contacto__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
 /* =========================================================
