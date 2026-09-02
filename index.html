@@ -32,10 +32,10 @@
         <ul class="navbar__links">
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#sobre-mi">Sobre mí</a></li>
-          <li><a href="#aptitudes">Aptitudes</a></li>
-          <li><a href="#certificaciones">Certificaciones</a></li>
-          <li><a href="#formacion">Formación</a></li>
           <li><a href="#series">Series</a></li>
+          <li><a href="#aptitudes">Aptitudes</a></li>
+          <li><a href="#formacion">Formación</a></li>
+          <li><a href="#certificaciones">Certificaciones</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
 
@@ -91,7 +91,67 @@
     </section>
 
     <!-- ======================= -->
-    <!-- 3. SECCIÓN APTITUDES TÉCNICAS -->
+    <!-- 3. SECCIÓN SERIES -->
+    <!-- ======================= -->
+    <section id="series" class="section">
+      <h2 class="section__titulo">Series</h2>
+      <p class="section__texto">
+        Series de videotutoriales donde documento procesos de administración de sistemas
+        paso a paso.
+      </p>
+
+      <div class="series__grid">
+
+                <!-- Tarjeta de la serie: Ubuntu Server 26.04 LTS -->
+        <!-- El badge "En curso" es la clase reutilizable .badge-en-curso (ver
+             css/styles.css): quítala cuando termines esta serie y añádela a
+             la siguiente que empieces. -->
+        <a href="series/ubuntu-server-26-04.html" class="serie-card">
+          <span class="badge-en-curso">
+            <span class="badge-en-curso__punto" aria-hidden="true"></span>
+            En curso
+          </span>
+          <div class="serie-card__miniatura">
+            <img class="serie-card__miniatura-img"
+                 src="assets/img/caratula-ubuntu-server.png"
+                 alt="Carátula de la serie Ubuntu Server 26.04 LTS"
+                 loading="lazy">
+          </div>
+          <div class="serie-card__contenido">
+            <h3 class="serie-card__titulo">Ubuntu Server 26.04 LTS</h3>
+            <p class="serie-card__descripcion">
+              Instalación, configuración y administración de Ubuntu Server 26.04 LTS
+              paso a paso.
+            </p>
+            <span class="serie-card__enlace">Ver vídeos →</span>
+          </div>
+        </a>
+
+        <!-- Tarjeta de la serie: Windows Server 2022 -->
+        <!-- Para añadir una nueva serie en el futuro, copia este bloque <a> y cambia
+             el href, la imagen (si se añade), el título y la descripción. -->
+        <a href="series/windows-server-2022.html" class="serie-card">
+          <div class="serie-card__miniatura">
+            <img class="serie-card__miniatura-img"
+                 src="assets/img/caratula-windows-server.png"
+                 alt="Carátula de la serie Windows Server 2022"
+                 loading="lazy">
+          </div>
+          <div class="serie-card__contenido">
+            <h3 class="serie-card__titulo">Windows Server 2022</h3>
+            <p class="serie-card__descripcion">
+              Configuración y administración paso a paso: Active Directory, DHCP, DNS,
+              recursos compartidos, copias de seguridad, GPOs y mucho más.
+            </p>
+            <span class="serie-card__enlace">Ver vídeos →</span>
+          </div>
+        </a>
+        
+      </div>
+    </section>
+
+    <!-- ======================= -->
+    <!-- 4. SECCIÓN APTITUDES TÉCNICAS -->
     <!-- ======================= -->
     <section id="aptitudes" class="section">
       <h2 class="section__titulo">Aptitudes técnicas</h2>
@@ -151,25 +211,6 @@
     </section>
 
     <!-- ======================= -->
-    <!-- 4. SECCIÓN CERTIFICACIONES -->
-    <!-- ======================= -->
-    <section id="certificaciones" class="section">
-      <h2 class="section__titulo">Certificaciones</h2>
-
-      <div class="certificaciones__grid">
-
-        <!-- Tarjeta: AZ-900 -->
-        <!-- Para añadir una nueva certificación, copia este bloque <div> y cambia
-             el título y el estado. -->
-        <div class="aptitud-card certificacion-card">
-          <h3 class="aptitud-card__titulo">Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
-          <span class="certificacion-card__estado certificacion-card__estado--en-curso">En curso</span>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ======================= -->
     <!-- 5. SECCIÓN FORMACIÓN ACADÉMICA -->
     <!-- ======================= -->
     <section id="formacion" class="section">
@@ -195,62 +236,24 @@
     </section>
 
     <!-- ======================= -->
-    <!-- 6. SECCIÓN SERIES -->
+    <!-- 6. SECCIÓN CERTIFICACIONES -->
     <!-- ======================= -->
-    <section id="series" class="section">
-      <h2 class="section__titulo">Series</h2>
-      <p class="section__texto">
-        Series de videotutoriales donde documento procesos de administración de sistemas
-        paso a paso.
-      </p>
+    <section id="certificaciones" class="section">
+      <h2 class="section__titulo">Certificaciones</h2>
 
-      <div class="series__grid">
+      <div class="certificaciones__grid">
 
-                <!-- Tarjeta de la serie: Ubuntu Server 26.04 LTS -->
-        <!-- El badge "En curso" es la clase reutilizable .badge-en-curso (ver
-             css/styles.css): quítala cuando termines esta serie y añádela a
-             la siguiente que empieces. -->
-        <a href="series/ubuntu-server-26-04.html" class="serie-card">
+        <!-- Tarjeta: AZ-900 -->
+        <!-- Para añadir una nueva certificación, copia este bloque <div> y cambia
+             el título y el estado. -->
+        <div class="aptitud-card certificacion-card">
+          <h3 class="aptitud-card__titulo">Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
           <span class="badge-en-curso">
             <span class="badge-en-curso__punto" aria-hidden="true"></span>
             En curso
           </span>
-          <div class="serie-card__miniatura">
-            <img class="serie-card__miniatura-img"
-                 src="assets/img/caratula-ubuntu-server.png"
-                 alt="Carátula de la serie Ubuntu Server 26.04 LTS"
-                 loading="lazy">
-          </div>
-          <div class="serie-card__contenido">
-            <h3 class="serie-card__titulo">Ubuntu Server 26.04 LTS</h3>
-            <p class="serie-card__descripcion">
-              Instalación, configuración y administración de Ubuntu Server 26.04 LTS
-              paso a paso.
-            </p>
-            <span class="serie-card__enlace">Ver vídeos →</span>
-          </div>
-        </a>
+        </div>
 
-        <!-- Tarjeta de la serie: Windows Server 2022 -->
-        <!-- Para añadir una nueva serie en el futuro, copia este bloque <a> y cambia
-             el href, la imagen (si se añade), el título y la descripción. -->
-        <a href="series/windows-server-2022.html" class="serie-card">
-          <div class="serie-card__miniatura">
-            <img class="serie-card__miniatura-img"
-                 src="assets/img/caratula-windows-server.png"
-                 alt="Carátula de la serie Windows Server 2022"
-                 loading="lazy">
-          </div>
-          <div class="serie-card__contenido">
-            <h3 class="serie-card__titulo">Windows Server 2022</h3>
-            <p class="serie-card__descripcion">
-              Configuración y administración paso a paso: Active Directory, DHCP, DNS,
-              recursos compartidos, copias de seguridad, GPOs y mucho más.
-            </p>
-            <span class="serie-card__enlace">Ver vídeos →</span>
-          </div>
-        </a>
-        
       </div>
     </section>
 

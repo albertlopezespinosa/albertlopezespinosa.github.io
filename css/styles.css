@@ -63,6 +63,14 @@ body {
   line-height: 1.6;
   /* Transición suave al cambiar de modo claro/oscuro */
   transition: background-color 0.3s ease, color 0.3s ease;
+  /* Patrón "sticky footer": el body ocupa como mínimo toda la altura de la
+     ventana y coloca sus hijos en columna, de modo que <main> (con flex: 1)
+     se estire para llenar el espacio sobrante y el <footer> quede siempre
+     pegado abajo aunque el contenido de la página sea corto. La navbar es
+     position: fixed, así que no cuenta como hijo en flujo de este flex. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 a {
@@ -224,6 +232,10 @@ body[data-theme="dark"] .theme-toggle__icon--sun {
    ========================================================= */
 main {
   padding-top: 4.5rem;
+  /* Parte "flexible" del sticky footer: crece para ocupar el espacio libre
+     (empujando el footer abajo) pero nunca se encoge por debajo de su
+     contenido en páginas largas. */
+  flex: 1 0 auto;
 }
 
 @media (max-width: 600px) {
@@ -410,21 +422,9 @@ main {
   gap: 0.75rem;
 }
 
-.certificacion-card__estado {
-  display: inline-block;
-  padding: 0.2rem 0.65rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 999px;
-}
-
-/* Borde punteado + acento en tono tenue: indica "en progreso" sin salirse
-   de la paleta azul petróleo del sitio */
-.certificacion-card__estado--en-curso {
-  color: var(--color-acento);
-  background-color: rgba(var(--color-acento-rgb), 0.1);
-  border: 1px dashed rgba(var(--color-acento-rgb), 0.5);
-}
+/* El estado "En curso" de una certificación usa la misma clase reutilizable
+   .badge-en-curso que las tarjetas de serie (ver sección SERIES), para que
+   el badge sea idéntico en todo el sitio. */
 
 /* =========================================================
    SERIES (tarjetas)
@@ -489,16 +489,13 @@ main {
   font-size: 0.9rem;
 }
 
-/* Badge "En curso": reutilizable en cualquier .serie-card. Añádelo a la
-   tarjeta de una serie mientras está en producción y quítalo al terminarla
-   (o pásalo a la siguiente serie que empieces). Fondo sólido (en vez de
-   tenue) a propósito: el badge flota sobre la miniatura del vídeo, así que
-   necesita contraste garantizado sea cual sea la imagen de fondo. */
+/* Badge "En curso": pill reutilizable (punto verde + texto). Se usa tanto
+   en las tarjetas de serie como en el estado de una certificación, así que
+   la clase base solo define la apariencia y se mantiene en el flujo normal.
+   Fondo sólido (en vez de tenue) a propósito: en la tarjeta de serie flota
+   sobre la miniatura del vídeo, así que necesita contraste garantizado sea
+   cual sea la imagen de fondo. */
 .badge-en-curso {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -509,6 +506,15 @@ main {
   background-color: var(--color-exito);
   border-radius: 999px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* Dentro de una tarjeta de serie el badge flota sobre la miniatura, en la
+   esquina superior derecha (.serie-card es position: relative). */
+.serie-card .badge-en-curso {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
 }
 
 .badge-en-curso__punto {
