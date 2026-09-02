@@ -437,10 +437,13 @@ main {
 }
 
 .serie-card {
+  position: relative;
+  /* overflow: hidden recorta la miniatura a las esquinas redondeadas de la
+     tarjeta, así no hace falta duplicar el border-radius en la imagen */
+  overflow: hidden;
   background-color: var(--color-fondo-alterno);
   border: 1px solid var(--color-borde);
   border-radius: 8px;
-  padding: 1.5rem;
   color: var(--color-texto);
   transition: background-color 0.3s ease, color 0.3s ease,
               border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -450,6 +453,23 @@ main {
   border-color: var(--color-acento);
   box-shadow: 0 4px 14px rgba(var(--color-acento-rgb), 0.25);
   transform: translateY(-4px);
+}
+
+/* Carátula de la serie (imagen local en assets/img/), proporción 16:9. */
+.serie-card__miniatura {
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-borde);
+}
+
+.serie-card__miniatura-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.serie-card__contenido {
+  padding: 1.5rem;
 }
 
 .serie-card__titulo {
@@ -467,6 +487,36 @@ main {
   color: var(--color-acento);
   font-weight: bold;
   font-size: 0.9rem;
+}
+
+/* Badge "En curso": reutilizable en cualquier .serie-card. Añádelo a la
+   tarjeta de una serie mientras está en producción y quítalo al terminarla
+   (o pásalo a la siguiente serie que empieces). Fondo sólido (en vez de
+   tenue) a propósito: el badge flota sobre la miniatura del vídeo, así que
+   necesita contraste garantizado sea cual sea la imagen de fondo. */
+.badge-en-curso {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--color-exito);
+  border-radius: 999px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+.badge-en-curso__punto {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #fff;
 }
 
 /* =========================================================
