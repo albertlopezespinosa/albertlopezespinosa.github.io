@@ -65,3 +65,47 @@ if (botonTema) {
     localStorage.setItem(CLAVE_TEMA, nuevoTema);
   });
 }
+
+// =========================================================
+// NAV QUE SE OCULTA AL HACER SCROLL (solo móvil)
+//
+// Solo compara la posición de scroll con la del evento anterior: si
+// bajamos, escondemos el nav (clase "navbar--oculto"); si subimos,
+// aunque sea un poco, lo mostramos enseguida. El CSS es quien decide
+// cómo se ve "oculto" (transform) y quien limita este comportamiento
+// a móvil (el media query de la clase), así que aquí no hace falta
+// comprobar el ancho de la ventana.
+// =========================================================
+
+const navbar = document.querySelector('.navbar');
+const MEDIA_MOVIL = window.matchMedia('(max-width: 600px)');
+
+let ultimaPosicionScroll = window.scrollY;
+
+function alHacerScroll() {
+  const posicionActual = window.scrollY;
+
+  // En la parte superior de la página siempre mostramos el nav, aunque
+  // el último movimiento registrado fuera "hacia abajo"
+  if (posicionActual <= 0) {
+    navbar.classList.remove('navbar--oculto');
+  } else if (posicionActual > ultimaPosicionScroll) {
+    navbar.classList.add('navbar--oculto'); // scroll hacia abajo
+  } else {
+    navbar.classList.remove('navbar--oculto'); // scroll hacia arriba
+  }
+
+  ultimaPosicionScroll = posicionActual;
+}
+
+if (navbar) {
+  window.addEventListener('scroll', alHacerScroll, { passive: true });
+
+  // Al pasar a escritorio no queremos que se quede oculto si el usuario
+  // había hecho scroll hacia abajo en móvil antes de ensanchar la ventana
+  MEDIA_MOVIL.addEventListener('change', function (evento) {
+    if (!evento.matches) {
+      navbar.classList.remove('navbar--oculto');
+    }
+  });
+}

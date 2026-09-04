@@ -113,7 +113,20 @@ img {
   background-color: rgba(var(--color-fondo-rgb), 0.95);
   border-bottom: 1px solid var(--color-borde);
   z-index: 100;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+              transform 0.3s ease;
+}
+
+/* En móvil, js/main.js añade esta clase al hacer scroll hacia abajo para
+   ocultar el nav (deslizándolo fuera de la pantalla) y ganar espacio de
+   lectura; la quita en cuanto detecta scroll hacia arriba. El propio JS
+   solo la aplica por debajo de 600px, pero el media query es la barrera
+   real: así un resize a escritorio con la clase aún puesta nunca oculta
+   el nav ahí. */
+@media (max-width: 600px) {
+  .navbar--oculto {
+    transform: translateY(-100%);
+  }
 }
 
 .navbar__nav {
@@ -534,6 +547,15 @@ main {
   gap: 0.6rem;
   padding: 0.35rem 0;
   border-bottom: 1px solid var(--color-borde);
+}
+
+/* El email y la URL de LinkedIn son cadenas sin espacios: sin esto, un
+   elemento flex nunca se encoge por debajo del ancho de su contenido
+   (min-width: auto por defecto) y esa cadena larga desborda la tarjeta,
+   empujando toda la sección de Contacto más ancha que el resto en móvil */
+.contacto__lista li a {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .contacto__icono {
