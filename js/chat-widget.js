@@ -7,6 +7,8 @@
 // página, no hace falta persistencia entre visitas.
 // =========================================================
 
+(function () {
+
 const CHAT_WIDGET_ENDPOINT = 'https://chatbot-backend.albertlopezespinosa.workers.dev/chat';
 
 const contenedor = document.querySelector('.chat-widget');
@@ -117,3 +119,5 @@ agregarMensaje(
 
 botonToggle.addEventListener('click', alternarVentana);
 formulario.addEventListener('submit', enviarMensaje);
+
+})();

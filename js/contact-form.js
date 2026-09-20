@@ -6,6 +6,8 @@
 // de llamar al backend para evitar peticiones innecesarias.
 // =========================================================
 
+(function () {
+
 const CONTACT_FORM_ENDPOINT = 'https://chatbot-backend.albertlopezespinosa.workers.dev/contact';
 
 const formulario = document.getElementById('contacto-form');
@@ -94,3 +96,5 @@ async function enviarFormulario(evento) {
 }
 
 formulario.addEventListener('submit', enviarFormulario);
+
+})();
