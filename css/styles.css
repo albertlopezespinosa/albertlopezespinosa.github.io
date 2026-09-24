@@ -388,11 +388,11 @@ main {
    FORMACIÓN ACADÉMICA
    Reutiliza la clase .aptitud-card (mismo fondo, borde, padding y
    tipografía) para mantener el mismo estilo visual de tarjeta;
-   solo cambia el layout de la grid (2 columnas en vez de 3).
+   solo cambia el layout de la grid (3 columnas, una por etapa educativa).
    ========================================================= */
 .formacion__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-top: 2rem;
 }
