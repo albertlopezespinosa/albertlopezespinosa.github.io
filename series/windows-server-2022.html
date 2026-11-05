@@ -14,30 +14,38 @@
   <!-- Favicon (ruta relativa: esta página está un nivel por debajo de la raíz) -->
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 
-  <!-- Ojo: esta página está dentro de series/, por eso la ruta sube un nivel con "../" -->
+  <!-- Tipografías: IBM Plex Sans (texto) y JetBrains Mono (detalles de terminal) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+  <!-- Ojo: esta página está dentro de series/, por eso las rutas suben un nivel con "../" -->
   <link rel="stylesheet" href="../css/styles.css">
 </head>
-<body>
+<!-- data-raiz: prefijo para las rutas de js/series-data.js (relativas a la raíz) -->
+<body data-raiz="../">
 
-  <!-- Mismo menú de navegación fijo que en index.html, pero apuntando de vuelta
+  <!-- Mismo menú de navegación que en index.html, apuntando de vuelta
        a las secciones de la página principal -->
   <header class="navbar">
     <nav class="navbar__nav">
-      <a href="../index.html#inicio" class="navbar__logo">
-        <img src="../assets/img/albert.png" alt="Albert López" class="navbar__logo-img">
+      <a href="../index.html#inicio" class="navbar__logo" aria-label="Ir al inicio">
+        <img src="../assets/img/albert.png" alt="" class="navbar__logo-img">
+        <span class="navbar__prompt">albert@kernel:~$</span>
       </a>
 
       <div class="navbar__right">
         <ul class="navbar__links">
-          <li><a href="../index.html#inicio">Inicio</a></li>
-          <li><a href="../index.html#sobre-mi">Sobre mí</a></li>
+          <li><a href="../index.html#series">Series</a></li>
           <li><a href="../index.html#aptitudes">Aptitudes</a></li>
           <li><a href="../index.html#formacion">Formación</a></li>
-          <li><a href="../index.html#series">Series</a></li>
+          <li><a href="../index.html#certificaciones">Certificaciones</a></li>
           <li><a href="../index.html#contacto">Contacto</a></li>
         </ul>
 
-        <!-- Botón para alternar entre modo claro y oscuro (misma lógica que en index.html) -->
+        <!-- Botón para alternar entre modo claro y oscuro.
+             Qué icono se ve (luna o sol) lo decide el CSS según
+             el atributo data-theme del body; el JS solo lo alterna. -->
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar a modo oscuro">
           <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -63,58 +71,67 @@
   <main>
 
     <section class="serie-header">
-      <a href="../index.html#series" class="serie-header__volver">&larr; Volver a Series</a>
+      <div class="contenedor">
+        <a href="../index.html#series" class="serie-header__volver">&larr; Volver a Series</a>
 
-      <h1 class="serie-header__titulo">Windows Server 2022</h1>
-      <p class="serie-header__descripcion">
-        Serie de videotutoriales sobre configuración y administración de Windows Server 2022:
-        Active Directory, DHCP, DNS, recursos compartidos, copias de seguridad, GPOs y más.
-      </p>
-      <a href="https://www.youtube.com/playlist?list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN"
-         target="_blank" rel="noopener noreferrer">
-        Ver playlist completa en YouTube →
-      </a>
+        <p class="section__etiqueta">serie / windows-server-2022</p>
+        <h1 class="serie-header__titulo">Windows Server 2022</h1>
+        <!-- Se sustituye por "N vídeos · ..." generado desde js/series-data.js -->
+        <p data-serie-contador="windows-server-2022"></p>
+        <p class="serie-header__descripcion">
+          Serie de videotutoriales sobre configuración y administración de Windows Server 2022:
+          Active Directory, DHCP, DNS, recursos compartidos, copias de seguridad, GPOs y más.
+        </p>
+        <a href="https://www.youtube.com/playlist?list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN" class="btn btn--outline"
+           target="_blank" rel="noopener noreferrer">
+          Ver playlist completa en YouTube →
+        </a>
+      </div>
     </section>
 
     <!-- Lista de vídeos de la serie: se genera desde js/series-data.js
          (ver js/series.js). Para añadir un vídeo, edita ese archivo de datos. -->
-    <ol class="videos__lista" data-serie-videos="windows-server-2022"></ol>
+    <section class="serie-videos">
+      <div class="contenedor">
+        <div class="tarjeta" data-serie-videos="windows-server-2022"></div>
+      </div>
+    </section>
 
   </main>
 
   <footer class="footer">
-    <p class="footer__copy">&copy; 2026 Albert López Espinosa</p>
+    <div class="contenedor footer__contenido">
+      <p class="footer__copy">&copy; 2026 Albert López Espinosa</p>
 
-    <div class="footer__social">
-      <a href="mailto:albertlopezespinosa@gmail.com" class="footer__social-link" aria-label="Enviar email">
-        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="4" width="20" height="16" rx="2"/>
-          <path d="m22 6-10 7L2 6"/>
-        </svg>
-      </a>
-      <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer"
-         class="footer__social-link" aria-label="Perfil de LinkedIn">
-        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
-          <rect x="2" y="9" width="4" height="12"/>
-          <circle cx="4" cy="4" r="2"/>
-        </svg>
-      </a>
-      <a href="https://www.youtube.com/@KernelDeAlbert" target="_blank" rel="noopener noreferrer"
-         class="footer__social-link" aria-label="Canal de YouTube">
-        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33Z"/>
-          <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
-        </svg>
-      </a>
+      <div class="footer__social">
+        <a href="https://www.youtube.com/@KernelDeAlbert" target="_blank" rel="noopener noreferrer"
+           class="footer__social-link" aria-label="Canal de YouTube">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33Z"/>
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer"
+           class="footer__social-link" aria-label="Perfil de LinkedIn">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+        <a href="https://github.com/albertlopezespinosa" target="_blank" rel="noopener noreferrer"
+           class="footer__social-link" aria-label="Perfil de GitHub">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </footer>
 
-  <!-- Esta página no necesita el script de scroll suave (no tiene menú de anclas
-       internas), pero lo incluimos por si en el futuro se añade algo interactivo -->
   <script src="../js/main.js"></script>
   <!-- Datos de las series (global SERIES) y su renderizado: el orden importa -->
   <script src="../js/series-data.js"></script>

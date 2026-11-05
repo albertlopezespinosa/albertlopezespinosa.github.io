@@ -12,8 +12,18 @@
 //
 // Las rutas (caratula, pagina) son relativas a la raíz del sitio.
 //
-// AÑADIR UN VÍDEO: añade un objeto { titulo, url } al FINAL del array
-// "videos" de su serie. El número se calcula solo por su posición.
+// AÑADIR UN VÍDEO: añade un objeto al FINAL del array "videos" de su
+// serie. El número se calcula solo por su posición.
+//   {
+//     titulo: 'Título completo',        // páginas de series/
+//     tituloCorto: 'Título corto',      // tarjetas de la portada
+//     url: 'https://youtu.be/...',
+//     descripcion: 'Una línea...'       // opcional: se ve en "Último vídeo"
+//   }
+//
+// En cada serie, "proximo" (título completo, o null) y "proximoCorto"
+// (opcional, para la tarjeta de la portada) describen el siguiente vídeo
+// planificado.
 // =========================================================
 
 const SERIES = [
@@ -26,22 +36,28 @@ const SERIES = [
     caratula: 'assets/img/caratula-ubuntu-server.png',
     pagina: 'series/ubuntu-server-26-04.html',
     proximo: 'Administrar el dominio Samba desde Windows con RSAT',
+    proximoCorto: 'Administrar el dominio desde Windows con RSAT',
     videos: [
       {
         titulo: 'Cómo instalar y preparar Ubuntu Server 26.04 LTS desde cero',
+        tituloCorto: 'Instalar y preparar Ubuntu Server desde cero',
         url: 'https://youtu.be/dhWQHKDa-_w'
       },
       {
         titulo: 'Cómo acceder por SSH a un servidor Ubuntu desde tu propio equipo',
+        tituloCorto: 'Acceder por SSH desde tu propio equipo',
         url: 'https://youtu.be/NRQ6Smun7q0'
       },
       {
         titulo: 'Cómo convertir un servidor Ubuntu en controlador de dominio con Samba',
+        tituloCorto: 'Controlador de dominio con Samba',
         url: 'https://youtu.be/JEXMWts-kPE'
       },
       {
         titulo: 'Cómo montar un servidor DHCP con Kea en Ubuntu Server',
-        url: 'https://youtu.be/_JGDpNrFeWU'
+        tituloCorto: 'Servidor DHCP con Kea',
+        url: 'https://youtu.be/_JGDpNrFeWU',
+        descripcion: 'Kea sustituye al antiguo isc-dhcp-server. Configuración del ámbito en la red interna del lab y comprobación desde un cliente.'
       }
     ]
   },
@@ -57,38 +73,47 @@ const SERIES = [
     videos: [
       {
         titulo: 'Cómo configurar Active Directory en Windows Server 2022',
+        tituloCorto: 'Active Directory',
         url: 'https://www.youtube.com/watch?v=yqFu7tcqLF4&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN'
       },
       {
         titulo: 'Cómo configurar DHCP en Windows Server 2022',
+        tituloCorto: 'DHCP',
         url: 'https://www.youtube.com/watch?v=oQbRMGpqTxA&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=2'
       },
       {
         titulo: 'Cómo configurar DNS en Windows Server 2022',
+        tituloCorto: 'DNS',
         url: 'https://www.youtube.com/watch?v=yEeeTGqQ_ng&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=3'
       },
       {
         titulo: 'Cómo compartir carpetas en Windows Server 2022',
+        tituloCorto: 'Carpetas compartidas',
         url: 'https://www.youtube.com/watch?v=UE1IEw0H2co&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=4'
       },
       {
         titulo: 'Cómo realizar, restaurar y validar una copia de seguridad en Windows Server 2022',
+        tituloCorto: 'Backup',
         url: 'https://www.youtube.com/watch?v=JmQRWjy9Hok&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=5'
       },
       {
         titulo: 'Cómo aplicar políticas de grupo (GPO) en Windows Server 2022',
+        tituloCorto: 'GPO',
         url: 'https://www.youtube.com/watch?v=ZLct-AAB_DU&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=6'
       },
       {
         titulo: 'Cómo configurar la redirección de carpetas en Windows Server 2022',
+        tituloCorto: 'Redirección de carpetas',
         url: 'https://www.youtube.com/watch?v=JGjwuvPJN_c&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=7'
       },
       {
         titulo: 'Cómo configurar perfiles móviles en Windows Server 2022',
+        tituloCorto: 'Perfiles móviles',
         url: 'https://www.youtube.com/watch?v=a1Cks29_qwc&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=8'
       },
       {
         titulo: 'Cómo promover un servidor Windows Server 2022 a controlador de dominio adicional',
+        tituloCorto: 'DC adicional',
         url: 'https://www.youtube.com/watch?v=MQRrPL2UWbU&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=9'
       }
     ]

@@ -1,9 +1,14 @@
 /* =========================================================
+   ESTILO "CONSOLA SOBRIA"
+   Base limpia con IBM Plex Sans para el texto y JetBrains Mono para
+   los detalles "de terminal" (etiquetas de sección, contadores,
+   numeración de episodios, prompt del nav...).
+
    VARIABLES DE COLOR Y TIPOGRAFÍA
-   Definimos aquí los colores principales del sitio para poder
-   cambiar el estilo fácilmente más adelante sin tocar el resto del CSS.
+   Todo el color vive aquí: el modo oscuro solo redefine valores.
    ========================================================= */
 :root {
+  /* --- Paleta base (se mantiene la anterior) --- */
   --color-fondo: #ffffff;
   --color-fondo-alterno: #f2f5f7;
   --color-texto: #111827;
@@ -12,38 +17,73 @@
   --color-borde: #e5e7eb;
   --color-exito: #16a34a;
 
-  /* Versión "r, g, b" del color de fondo, para poder usarlo con
-     transparencia en rgba() (la usa el fondo del nav) */
+  /* Versión "r, g, b" del fondo y del acento, para usarlos con
+     transparencia en rgba() (fondo del nav, sombras, hovers) */
   --color-fondo-rgb: 255, 255, 255;
-
-  /* Versión "r, g, b" del acento, para la sombra tintada de las tarjetas */
   --color-acento-rgb: 20, 73, 92;
 
-  --fuente-principal: "Segoe UI", Roboto, Arial, sans-serif;
+  /* --- Nuevas variables --- */
+  /* Verde de estado: "en curso", "activo", disponibilidad... */
+  --color-estado: #15803d;
+  /* Texto que va encima de un relleno de --color-estado (badge) */
+  --color-estado-texto: #ffffff;
 
-  --ancho-maximo: 1100px;
+  /* Botón principal (relleno). En claro coincide con el acento;
+     en oscuro cambia porque #14495c no contrasta sobre fondo oscuro */
+  --color-boton-fondo: #14495c;
+  --color-boton-fondo-hover: #0f3a4a;
+  --color-boton-texto: #ffffff;
+
+  /* Bloque tipo terminal del hero: siempre oscuro, en ambos temas */
+  --terminal-fondo: #101820;
+  --terminal-borde: #101820;
+  --terminal-texto: #d7e0e5;
+  --terminal-suave: #7f939e;
+  --terminal-acento: #4f9fbd;
+  --terminal-verde: #5fc97a;
+
+  --color-error: #dc3545;
+
+  --fuente-principal: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --fuente-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ancho-maximo: 1120px;
+  --radio-tarjeta: 12px;
+  --radio-boton: 6px;
 }
 
 /* Modo oscuro: mismo set de variables, valores distintos.
    Se activa poniendo data-theme="dark" en el <body> (lo hace js/main.js) */
 body[data-theme="dark"] {
+  color-scheme: dark;
+
   --color-fondo: #101820;
   --color-fondo-alterno: #1b2732;
   --color-texto: #eef3f5;
   --color-texto-suave: #93a4ad;
   --color-acento: #4f9fbd;
   --color-borde: #2a3942;
-  /* Verde algo más claro que en modo claro, para mantener contraste
-     sobre el fondo oscuro */
   --color-exito: #4ade80;
   --color-fondo-rgb: 16, 24, 32;
   --color-acento-rgb: 79, 159, 189;
+
+  --color-estado: #5fc97a;
+  --color-estado-texto: #101820;
+
+  --color-boton-fondo: #4f9fbd;
+  --color-boton-fondo-hover: #6bb2cc;
+  --color-boton-texto: #101820;
+
+  /* En oscuro la terminal es un tono más oscuro que el fondo, con
+     borde para que no se funda con la página */
+  --terminal-fondo: #0a1016;
+  --terminal-borde: #2a3942;
+
+  --color-error: #f1707d;
 }
 
 /* =========================================================
    RESET BÁSICO
-   Quitamos márgenes/paddings por defecto del navegador para
-   tener un punto de partida consistente en todos los navegadores.
    ========================================================= */
 * {
   margin: 0;
@@ -58,19 +98,22 @@ html {
 
 body {
   font-family: var(--fuente-principal);
+  font-size: 16px;
   background-color: var(--color-fondo);
   color: var(--color-texto);
   line-height: 1.6;
-  /* Transición suave al cambiar de modo claro/oscuro */
+  -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
-  /* Patrón "sticky footer": el body ocupa como mínimo toda la altura de la
-     ventana y coloca sus hijos en columna, de modo que <main> (con flex: 1)
-     se estire para llenar el espacio sobrante y el <footer> quede siempre
-     pegado abajo aunque el contenido de la página sea corto. La navbar es
-     position: fixed, así que no cuenta como hijo en flujo de este flex. */
+  /* Patrón "sticky footer": <main> (flex: 1) empuja el footer abajo
+     aunque la página sea corta. La navbar es fixed y no cuenta. */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 a {
@@ -78,26 +121,38 @@ a {
   text-decoration: none;
 }
 
-ul {
+ul,
+ol {
   list-style: none;
 }
 
-/* =========================================================
-   FOCO ACCESIBLE (navegación con teclado)
-   :focus-visible solo se activa cuando el elemento recibe el foco por
-   teclado (Tab), no al hacer click con el ratón — así el outline no
-   aparece "sin motivo" en clicks de ratón, pero sí guía a quien navega
-   con teclado.
-   ========================================================= */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* El atributo hidden siempre gana, aunque una clase defina display */
+[hidden] {
+  display: none !important;
+}
+
+/* Foco visible solo con teclado (Tab), no al hacer click con el ratón */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-acento);
   outline-offset: 2px;
 }
 
-img {
-  max-width: 100%;
-  display: block;
+/* Contenedor centrado de 1120px de contenido, con margen lateral
+   mínimo de 1.5rem en pantallas estrechas */
+.contenedor {
+  width: min(var(--ancho-maximo), 100% - 3rem);
+  margin-inline: auto;
+}
+
+/* Al saltar a un ancla (#series...), deja hueco para el nav fijo */
+section[id] {
+  scroll-margin-top: 4.5rem;
 }
 
 /* =========================================================
@@ -108,9 +163,9 @@ img {
   top: 0;
   left: 0;
   width: 100%;
-  /* rgba en vez de var(--color-fondo) directo: así el nav mantiene su
-     ligera transparencia en ambos modos, usando --color-fondo-rgb */
-  background-color: rgba(var(--color-fondo-rgb), 0.95);
+  background-color: rgba(var(--color-fondo-rgb), 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-borde);
   z-index: 100;
   transition: background-color 0.3s ease, border-color 0.3s ease,
@@ -118,11 +173,8 @@ img {
 }
 
 /* En móvil, js/main.js añade esta clase al hacer scroll hacia abajo para
-   ocultar el nav (deslizándolo fuera de la pantalla) y ganar espacio de
-   lectura; la quita en cuanto detecta scroll hacia arriba. El propio JS
-   solo la aplica por debajo de 600px, pero el media query es la barrera
-   real: así un resize a escritorio con la clase aún puesta nunca oculta
-   el nav ahí. */
+   ocultar el nav; la quita al detectar scroll hacia arriba. El media query
+   es la barrera real: en escritorio nunca se oculta. */
 @media (max-width: 600px) {
   .navbar--oculto {
     transform: translateY(-100%);
@@ -130,37 +182,44 @@ img {
 }
 
 .navbar__nav {
-  max-width: var(--ancho-maximo);
-  margin: 0 auto;
+  width: min(var(--ancho-maximo), 100% - 3rem);
+  margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  gap: 1rem;
+  padding-block: 0.85rem;
 }
 
+/* Logo: avatar circular + prompt de terminal */
 .navbar__logo {
   display: flex;
   align-items: center;
+  gap: 0.7rem;
+  color: var(--color-texto);
+}
+
+.navbar__logo-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
+}
+
+.navbar__prompt {
+  font-family: var(--fuente-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 /* Agrupa los links y el botón de tema a la derecha del logo */
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-}
-
-/* Avatar circular del menú: recorta la foto (medio cuerpo) centrada en la
-   cara sin deformarla. Usamos box-shadow en vez de border para el anillo
-   de acento: no compite por espacio con border-radius y se ve más limpio
-   en las esquinas de un círculo */
-.navbar__logo-img {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  object-fit: cover;
-  background-color: var(--color-fondo);
-  box-shadow: 0 0 0 2px var(--color-acento);
+  gap: 1.75rem;
 }
 
 .navbar__links {
@@ -170,7 +229,8 @@ img {
 
 .navbar__links a {
   color: var(--color-texto-suave);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  font-weight: 500;
   transition: color 0.2s ease;
 }
 
@@ -183,29 +243,29 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 0;
-  border: none;
-  border-radius: 50%;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-boton);
   background: none;
   color: var(--color-texto-suave);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .theme-toggle:hover {
   color: var(--color-acento);
+  border-color: var(--color-acento);
 }
 
 .theme-toggle__icon {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
-/* Por defecto (modo claro) se ve la luna; en modo oscuro se ve el sol.
-   El JS solo pone/quita data-theme="dark" en el body; quién se ve lo
-   decide este CSS */
+/* Modo claro: se ve la luna; modo oscuro: el sol. El JS solo pone/quita
+   data-theme="dark" en el body; qué icono se ve lo decide el CSS */
 .theme-toggle__icon--sun {
   display: none;
 }
@@ -218,445 +278,781 @@ body[data-theme="dark"] .theme-toggle__icon--sun {
   display: block;
 }
 
-/* En pantallas pequeñas, los enlaces del menú se reducen para que quepan */
-@media (max-width: 600px) {
+/* Entre tablet y escritorio, los enlaces se compactan un poco */
+@media (max-width: 900px) {
+  .navbar__right,
+  .navbar__links {
+    gap: 1rem;
+  }
+}
+
+/* En móvil: primera fila logo + botón de tema, segunda fila los enlaces.
+   display: contents "disuelve" .navbar__right para que sus hijos (lista
+   y botón) se coloquen como hijos directos del flex del nav. */
+@media (max-width: 760px) {
   .navbar__nav {
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    row-gap: 0.6rem;
+    padding-block: 0.7rem;
   }
 
   .navbar__right {
-    flex-direction: column;
-    gap: 0.75rem;
+    display: contents;
   }
 
   .navbar__links {
-    gap: 0.75rem;
+    order: 3;
+    flex-basis: 100%;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 0.35rem 1rem;
+  }
+
+  .navbar__links a {
+    font-size: 0.85rem;
   }
 }
 
 /* =========================================================
-   UTILIDAD: separación bajo el menú fijo
-   Como el menú es "fixed", el contenido de main necesita un
-   margen superior para no quedar tapado por el menú.
+   SEPARACIÓN BAJO EL MENÚ FIJO
    ========================================================= */
 main {
-  padding-top: 4.5rem;
-  /* Parte "flexible" del sticky footer: crece para ocupar el espacio libre
-     (empujando el footer abajo) pero nunca se encoge por debajo de su
-     contenido en páginas largas. */
+  padding-top: 4rem;
+  /* Parte "flexible" del sticky footer */
   flex: 1 0 auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 760px) {
   main {
-    padding-top: 6rem;
+    padding-top: 7rem;
+  }
+
+  section[id] {
+    scroll-margin-top: 1rem;
   }
 }
 
 /* =========================================================
-   SECCIÓN INICIO (HERO)
+   ETIQUETAS MONO REUTILIZABLES
    ========================================================= */
-.hero {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem 1.5rem;
-}
-
-.hero__content {
-  max-width: 700px;
-}
-
-.hero__nombre {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.hero__titular {
-  font-size: 1.25rem;
+/* "01 / series", "02 / aptitudes"... encima del título de sección */
+.section__etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 13px;
   color: var(--color-acento);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 /* =========================================================
    BOTONES
    ========================================================= */
 .btn {
-  display: inline-block;
-  padding: 0.75rem 1.75rem;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-  transform: scale(1.02);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid transparent;
+  border-radius: var(--radio-boton);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn--primary {
-  background-color: var(--color-texto);
-  color: var(--color-fondo);
+  background-color: var(--color-boton-fondo);
+  color: var(--color-boton-texto);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-acento);
+  background-color: var(--color-boton-fondo-hover);
+}
+
+.btn--outline {
+  border-color: var(--color-acento);
+  color: var(--color-acento);
+  background-color: transparent;
+}
+
+.btn--outline:hover {
+  background-color: rgba(var(--color-acento-rgb), 0.08);
 }
 
 /* =========================================================
-   SECCIONES GENERALES (Sobre mí, Aptitudes, Series, Contacto)
+   HERO (presentación + terminal)
    ========================================================= */
+/* Mismo padding vertical que el resto de secciones (72px) */
+.hero {
+  padding-block: 72px;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.hero__prompt {
+  font-family: var(--fuente-mono);
+  font-size: 0.95rem;
+  color: var(--color-acento);
+  margin-bottom: 0.75rem;
+}
+
+/* 56px en escritorio, reduciéndose en pantallas estrechas */
+.hero__nombre {
+  font-size: clamp(2.25rem, 6vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin-bottom: 0.85rem;
+}
+
+.hero__titular {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--color-texto-suave);
+  margin-bottom: 1.25rem;
+}
+
+.hero__bio {
+  color: var(--color-texto-suave);
+  max-width: 560px;
+  margin-bottom: 2rem;
+}
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* --- Bloque tipo terminal --- */
+.terminal {
+  background-color: var(--terminal-fondo);
+  border: 1px solid var(--terminal-borde);
+  border-radius: var(--radio-tarjeta);
+  color: var(--terminal-texto);
+  font-family: var(--fuente-mono);
+  font-size: 0.88rem;
+  line-height: 1.75;
+  box-shadow: 0 18px 40px -18px rgba(16, 24, 32, 0.55);
+  overflow: hidden;
+}
+
+/* Barra superior con los tres puntos de ventana */
+.terminal__barra {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.terminal__punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+.terminal__nombre {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--terminal-suave);
+}
+
+.terminal__cuerpo {
+  padding: 1.25rem 1.4rem 1.4rem;
+  overflow-x: auto;
+}
+
+.terminal__linea {
+  white-space: pre-wrap;
+}
+
+.terminal__sangria {
+  padding-left: 2ch;
+}
+
+.terminal__prompt {
+  color: var(--terminal-acento);
+}
+
+.terminal__suave {
+  color: var(--terminal-suave);
+}
+
+.terminal__verde {
+  color: var(--terminal-verde);
+}
+
+.terminal__comando {
+  margin-bottom: 0.35rem;
+}
+
+/* Cursor parpadeante al final, respetando "reducir movimiento" */
+.terminal__cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  background-color: var(--terminal-texto);
+  animation: terminal-parpadeo 1.1s steps(1) infinite;
+}
+
+@keyframes terminal-parpadeo {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal__cursor {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* =========================================================
+   SECCIONES GENERALES
+   ========================================================= */
+/* Todas las secciones (y el hero) usan 72px arriba y abajo, también en
+   móvil, para que los bloques alternos tengan el mismo margen */
 .section {
-  max-width: var(--ancho-maximo);
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding-block: 72px;
+}
+
+/* Fondo secundario a todo el ancho, con borde fino arriba y abajo.
+   Alterna con el fondo principal: Hero, Series*, Aptitudes, Formación*,
+   Certificaciones, Contacto* (* = section--alterno). Las tarjetas
+   (.tarjeta, .serie-card, .destacado) usan --color-fondo y destacan solas. */
+.section--alterno {
+  background-color: var(--color-fondo-alterno);
+  border-block: 1px solid var(--color-borde);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .section__titulo {
   font-size: 2rem;
-  margin-bottom: 1.5rem;
-  border-left: 4px solid var(--color-acento);
-  padding-left: 0.75rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
 }
 
 .section__texto {
   color: var(--color-texto-suave);
-  max-width: 750px;
+  max-width: 680px;
+}
+
+@media (max-width: 600px) {
+  .section__titulo {
+    font-size: 1.65rem;
+  }
 }
 
 /* =========================================================
-   APTITUDES TÉCNICAS
+   TARJETA BASE
+   Fondo de página, borde fino y radio de 12px. Sobre una sección
+   con fondo alterno destaca sola; sobre fondo normal la define el borde.
    ========================================================= */
-.aptitudes__grid {
-  display: grid;
-  /* 4 tarjetas en 2x2: con repeat(3, 1fr) la 4ª quedaría suelta en una
-     fila nueva ocupando solo 1/3 del ancho */
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.aptitud-card {
-  background-color: var(--color-fondo-alterno);
+.tarjeta {
+  background-color: var(--color-fondo);
   border: 1px solid var(--color-borde);
-  border-radius: 8px;
+  border-radius: var(--radio-tarjeta);
   padding: 1.5rem;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.2s ease;
 }
 
-.aptitud-card__titulo {
-  color: var(--color-acento);
-  margin-bottom: 1rem;
+.tarjeta__titulo {
   font-size: 1.1rem;
+  margin-bottom: 0.85rem;
 }
 
-.aptitud-card__lista li {
-  color: var(--color-texto-suave);
-  padding: 0.25rem 0;
-}
-
-/* Etiqueta secundaria con el equivalente Azure de una aptitud on-premise.
-   display: block para que siempre caiga en su propia línea, debajo del
-   texto principal, sin competir visualmente con él (fuente pequeña y
-   colores tenues del propio acento del sitio). */
-.aptitud-card__azure {
-  display: block;
-  width: fit-content;
-  margin-top: 0.35rem;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.72rem;
-  font-weight: 600;
+/* Etiqueta mono en mayúsculas encima del título (GRADO SUPERIOR...) */
+.tarjeta__nivel {
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-acento);
-  background-color: rgba(var(--color-acento-rgb), 0.08);
-  border: 1px solid rgba(var(--color-acento-rgb), 0.2);
-  border-radius: 4px;
+  margin-bottom: 0.5rem;
 }
 
-/* En tablet/móvil, las tarjetas de aptitudes pasan a una sola columna */
+/* =========================================================
+   SERIES
+   ========================================================= */
+.series__cabecera {
+  margin-bottom: 2.5rem;
+}
+
+/* --- Bloque destacado "Último vídeo" ---
+   Tarjeta con 16px de padding: la carátula (máx. 480px) queda dentro,
+   con su propio radio, y el texto a la derecha. */
+.destacado {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 16px;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 12px;
+  color: var(--color-texto);
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s ease, border-color 0.2s ease;
+}
+
+.destacado:hover {
+  border-color: var(--color-acento);
+}
+
+.destacado__miniatura {
+  position: relative;
+  flex: 0 1 480px;
+  max-width: 480px;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--color-borde);
+}
+
+/* Botón de play centrado sobre la carátula */
+.destacado__play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(17, 24, 39, 0.75);
+  color: #fff;
+  transition: transform 0.2s ease;
+}
+
+.destacado__play svg {
+  width: 24px;
+  height: 24px;
+  margin-left: 3px; /* compensa visualmente el triángulo */
+}
+
+.destacado:hover .destacado__play {
+  transform: scale(1.06);
+}
+
+.destacado__contenido {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px;
+}
+
+.destacado__etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  color: var(--color-estado);
+}
+
+.destacado__titulo {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.destacado__descripcion {
+  font-size: 16px;
+  color: var(--color-texto-suave);
+}
+
+.destacado__enlace {
+  color: var(--color-acento);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.destacado:hover .destacado__enlace {
+  text-decoration: underline;
+}
+
+/* --- Grid de tarjetas de serie ---
+   align-items: start: cada tarjeta mide lo que ocupe su contenido */
+.series__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.5rem;
+}
+
+.serie-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-tarjeta);
+  overflow: hidden;
+  transition: background-color 0.3s ease, border-color 0.2s ease;
+}
+
+.serie-card:hover {
+  border-color: rgba(var(--color-acento-rgb), 0.55);
+}
+
+.serie-card__miniatura {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--color-borde);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+/* Carátulas: los PNG traen una franja de color de 14px (de 720) en el
+   borde superior. La imagen se dibuja un 2% más alta y se sube ese 2%
+   para que la franja quede fuera del recorte (overflow: hidden del
+   contenedor), sin tener que editar los archivos. */
+.serie-card__miniatura img,
+.destacado__miniatura img {
+  width: 100%;
+  height: 102%;
+  object-fit: cover;
+  transform: translateY(-2%);
+}
+
+.serie-card__contenido {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.serie-card__titulo {
+  font-size: 1.25rem;
+  margin-bottom: 0.3rem;
+}
+
+.serie-card__titulo a {
+  color: var(--color-texto);
+}
+
+.serie-card__titulo a:hover {
+  color: var(--color-acento);
+}
+
+/* Contador "4 vídeos · en producción" */
+.serie-contador {
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+
+.serie-contador__estado {
+  color: var(--color-estado);
+}
+
+.serie-card .serie-contador {
+  margin-bottom: 1rem;
+}
+
+.serie-card__enlace {
+  padding-top: 1.25rem;
+  color: var(--color-acento);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.serie-card__enlace:hover {
+  text-decoration: underline;
+}
+
+/* --- Badges sobre la carátula: píldora en IBM Plex Sans ---
+   Fondo blanco en claro y #101820 en oscuro (--color-fondo) */
+.badge {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.65rem;
+  font-family: var(--fuente-principal);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  background-color: var(--color-fondo);
+  border-radius: 999px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.badge--en-curso {
+  color: var(--color-estado);
+}
+
+.badge--completa {
+  color: var(--color-texto);
+}
+
+.badge__punto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-estado);
+}
+
+/* --- Lista numerada de episodios (portada y páginas de serie) ---
+   Número mono en color de acento + título, separados 12px,
+   12px de padding vertical y borde inferior fino */
+.episodios {
+  border-top: 1px solid var(--color-borde);
+}
+
+.episodio {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-borde);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.episodio__numero {
+  flex: 0 0 auto;
+  min-width: 1.6rem;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  color: var(--color-acento);
+}
+
+.episodio__titulo {
+  min-width: 0;
+  color: var(--color-texto);
+}
+
+a.episodio__titulo:hover {
+  color: var(--color-acento);
+}
+
+/* En las tarjetas de la portada cada episodio ocupa una sola línea;
+   si un título no cabe se recorta con "…" (el completo va en el tooltip) */
+.episodios--compacta .episodio__titulo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Fila "+N" con los títulos restantes, y vídeo "próximamente":
+   en gris y sin enlace */
+.episodio--resto .episodio__numero,
+.episodio--resto .episodio__titulo,
+.episodio--proximo .episodio__numero,
+.episodio--proximo .episodio__titulo {
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 900px) {
+  .destacado {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .destacado__miniatura {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .destacado__titulo {
+    font-size: 22px;
+  }
+}
+
 @media (max-width: 800px) {
-  .aptitudes__grid {
+  .series__grid {
     grid-template-columns: 1fr;
   }
 }
 
 /* =========================================================
-   FORMACIÓN ACADÉMICA
-   Reutiliza la clase .aptitud-card (mismo fondo, borde, padding y
-   tipografía) para mantener el mismo estilo visual de tarjeta;
-   solo cambia el layout de la grid (3 columnas, una por etapa educativa).
+   APTITUDES TÉCNICAS
+   Una tarjeta por bloque: título + un párrafo con los puntos
+   separados por " · ", sin divisiones internas.
    ========================================================= */
-.formacion__grid {
+.aptitudes__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
-.formacion-card__programa {
+.aptitud-card__titulo {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.aptitud-card__texto {
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--color-texto-suave);
+}
+
+/* Equivalencias en Azure (solo en el bloque de Sistemas) */
+.aptitud-card__azure {
+  margin-top: 0.85rem;
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  color: var(--color-acento);
+}
+
+/* =========================================================
+   FORMACIÓN ACADÉMICA
+   ========================================================= */
+.formacion__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.formacion-card .tarjeta__titulo {
   margin-bottom: 0.5rem;
 }
 
 .formacion-card__centro {
   color: var(--color-texto-suave);
-  font-size: 0.9rem;
-  font-style: italic;
-}
-
-/* En tablet/móvil, las tarjetas de formación pasan a una sola columna */
-@media (max-width: 800px) {
-  .formacion__grid {
-    grid-template-columns: 1fr;
-  }
+  font-size: 0.92rem;
 }
 
 /* =========================================================
    CERTIFICACIONES
-   auto-fill/minmax en vez de un número fijo de columnas: con una sola
-   tarjeta hoy ocupa un tamaño razonable en vez de estirarse a lo ancho,
-   y el grid ya soporta añadir más tarjetas en fila sin tocar el CSS.
+   Flex con wrap: la tarjeta obtenida ocupa el doble que la del
+   siguiente objetivo y, si no caben juntas, cada una baja a su fila.
    ========================================================= */
 .certificaciones__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
+/* AZ-900: icono a la izquierda, texto a la derecha */
 .certificacion-card {
+  flex: 2 1 420px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.certificacion-card__icono {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background-color: var(--color-fondo-alterno);
+  color: var(--color-acento);
+  transition: background-color 0.3s ease;
+}
+
+.certificacion-card__icono svg {
+  width: 34px;
+  height: 34px;
+}
+
+.certificacion-card__texto {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
+  gap: 6px;
 }
 
-/* El estado "En curso" de una certificación usa la misma clase reutilizable
-   .badge-en-curso que las tarjetas de serie (ver sección SERIES), para que
-   el badge sea idéntico en todo el sitio. */
-
-/* Miniatura del certificado: proporción real de la captura (1021x534,
-   más ancha que alta) y radio propio algo menor que el de la tarjeta,
-   ya que queda dentro de su padding en vez de a sangre como en .serie-card. */
-.certificacion-card__miniatura {
-  width: 100%;
-  aspect-ratio: 1021 / 534;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid var(--color-borde);
+.certificacion-card__titulo {
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.certificacion-card__miniatura-img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.certificacion-card__fecha {
+  font-size: 14px;
+  color: var(--color-texto-suave);
 }
 
 .certificacion-card__verificar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
+  width: fit-content;
   color: var(--color-acento);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 
 .certificacion-card__verificar:hover {
   text-decoration: underline;
 }
 
-.certificacion-card__verificar-icono {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
+/* Siguiente objetivo: borde discontinuo, contenido centrado en vertical */
+.objetivo-card {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  border-style: dashed;
+  border-width: 1.5px;
+  background-color: transparent;
 }
 
-/* =========================================================
-   SERIES (tarjetas)
-   ========================================================= */
-.series__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.serie-card {
-  position: relative;
-  /* overflow: hidden recorta la miniatura a las esquinas redondeadas de la
-     tarjeta, así no hace falta duplicar el border-radius en la imagen */
-  overflow: hidden;
-  background-color: var(--color-fondo-alterno);
-  border: 1px solid var(--color-borde);
-  border-radius: 8px;
-  color: var(--color-texto);
-  transition: background-color 0.3s ease, color 0.3s ease,
-              border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.serie-card:hover {
-  border-color: var(--color-acento);
-  box-shadow: 0 4px 14px rgba(var(--color-acento-rgb), 0.25);
-  transform: translateY(-4px);
-}
-
-/* Carátula de la serie (imagen local en assets/img/), proporción 16:9. */
-.serie-card__miniatura {
-  aspect-ratio: 16 / 9;
-  background-color: var(--color-borde);
-}
-
-.serie-card__miniatura-img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.serie-card__contenido {
-  padding: 1.5rem;
-}
-
-.serie-card__titulo {
-  margin-bottom: 0.75rem;
-  color: var(--color-texto);
-}
-
-.serie-card__descripcion {
+.objetivo-card__etiqueta {
+  font-family: var(--fuente-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-texto-suave);
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
 }
 
-.serie-card__enlace {
-  color: var(--color-acento);
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-/* Badge "En curso": pill reutilizable (punto verde + texto). Se usa tanto
-   en las tarjetas de serie como en el estado de una certificación, así que
-   la clase base solo define la apariencia y se mantiene en el flujo normal.
-   Fondo sólido (en vez de tenue) a propósito: en la tarjeta de serie flota
-   sobre la miniatura del vídeo, así que necesita contraste garantizado sea
-   cual sea la imagen de fondo. */
-.badge-en-curso {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.2rem 0.65rem;
-  font-size: 0.75rem;
+.objetivo-card__nombre {
+  font-family: var(--fuente-principal);
+  font-size: 18px;
   font-weight: 600;
-  color: #fff;
-  background-color: var(--color-exito);
-  border-radius: 999px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
 }
 
-/* Dentro de una tarjeta de serie el badge flota sobre la miniatura, en la
-   esquina superior derecha (.serie-card es position: relative). */
-.serie-card .badge-en-curso {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1;
+@media (max-width: 800px) {
+  .aptitudes__grid,
+  .formacion__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.badge-en-curso__punto {
-  width: 6px;
-  height: 6px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background-color: #fff;
+@media (max-width: 480px) {
+  .certificacion-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 /* =========================================================
    CONTACTO
    ========================================================= */
-.contacto__lista li {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--color-borde);
-}
-
-/* El email y la URL de LinkedIn son cadenas sin espacios: sin esto, un
-   elemento flex nunca se encoge por debajo del ancho de su contenido
-   (min-width: auto por defecto) y esa cadena larga desborda la tarjeta,
-   empujando toda la sección de Contacto más ancha que el resto en móvil */
-.contacto__lista li a {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.contacto__icono {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  color: var(--color-texto-suave);
-  transition: color 0.2s ease;
-}
-
-/* Hover en toda la fila (no solo en el link) para que el icono
-   acompañe al resto de elementos interactivos del sitio */
-.contacto__lista li:hover .contacto__icono {
-  color: var(--color-acento);
-}
-
-.contacto__etiqueta {
-  color: var(--color-texto-suave);
-}
-
-.contacto__cv-btn {
-  /* Sin margin-top: el espacio hasta lo anterior lo reparte el
-     justify-content: space-between de .contacto__info */
-  align-self: flex-start;
-}
-
-/* Bloque de disponibilidad, entre la lista de contacto y el botón de CV.
-   El border-top hace de separador sutil, mismo estilo que ya se usa
-   entre los datos de contacto (border-bottom en .contacto__lista li) */
-.contacto__disponibilidad {
-  border-top: 1px solid var(--color-borde);
-  padding-top: 1rem;
-}
-
-.contacto__disponibilidad-estado {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: bold;
-}
-
-.contacto__punto-estado {
-  width: 8px;
-  height: 8px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background-color: var(--color-exito);
-}
-
-.contacto__disponibilidad-texto {
-  margin-top: 0.4rem;
-  font-size: 0.9rem;
-  color: var(--color-texto-suave);
-}
-
-/* Info (lista + CV) a la izquierda, formulario a la derecha. Ambas
-   columnas son tarjetas del mismo estilo y, al no limitar la altura de
-   la fila (sin align-items: start), se estiran a la misma altura: la
-   info reparte lista arriba / botón CV abajo con space-between para no
-   dejar hueco vacío. En móvil pasa a una sola columna, info primero */
+/* Info a la izquierda, formulario a la derecha; ambas columnas se
+   estiran a la misma altura. En móvil, una sola columna. */
 .contacto__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
@@ -664,20 +1060,85 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--color-fondo-alterno);
-  border: 1px solid var(--color-borde);
-  border-radius: 8px;
-  padding: 1.5rem;
+  gap: 1.5rem;
+}
+
+.contacto__lista li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.contacto__lista li:first-child {
+  padding-top: 0;
+}
+
+/* El email y la URL de LinkedIn son cadenas sin espacios: sin esto,
+   desbordan la tarjeta en móvil */
+.contacto__lista li a {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.contacto__icono {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-texto-suave);
+  transition: color 0.2s ease;
+}
+
+.contacto__lista li:hover .contacto__icono {
+  color: var(--color-acento);
+}
+
+/* Ancho fijo para que los valores (email, URL, ciudad) queden alineados */
+.contacto__etiqueta {
+  flex: 0 0 5.25rem;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+
+.contacto__disponibilidad-estado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.contacto__punto-estado {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--color-estado);
+  box-shadow: 0 0 0 3px rgba(95, 201, 122, 0.2);
+}
+
+.contacto__disponibilidad-texto {
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  color: var(--color-texto-suave);
+}
+
+.contacto__cv-btn {
+  align-self: flex-start;
 }
 
 .contacto__form {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  background-color: var(--color-fondo-alterno);
-  border: 1px solid var(--color-borde);
-  border-radius: 8px;
-  padding: 1.5rem;
+}
+
+/* Nombre y Email en la misma fila */
+.contacto__fila {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
 .contacto__campo {
@@ -687,67 +1148,73 @@ main {
 }
 
 .contacto__campo label {
-  font-size: 0.9rem;
-  font-weight: bold;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-texto);
 }
 
 .contacto__opcional {
-  font-weight: normal;
+  font-weight: 400;
   color: var(--color-texto-suave);
 }
 
 .contacto__campo input,
 .contacto__campo textarea {
+  width: 100%;
   padding: 0.65rem 0.85rem;
   border: 1px solid var(--color-borde);
-  border-radius: 6px;
-  background-color: var(--color-fondo);
+  border-radius: var(--radio-boton);
+  background-color: var(--color-fondo-alterno);
   color: var(--color-texto);
   font-family: inherit;
   font-size: 0.95rem;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.3s ease, box-shadow 0.2s ease;
 }
 
 .contacto__campo textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 130px;
 }
 
 .contacto__campo input:focus,
 .contacto__campo textarea:focus {
   outline: none;
   border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px rgba(var(--color-acento-rgb), 0.15);
 }
 
 .contacto__form-enviar {
   align-self: flex-start;
-  border: none;
-  cursor: pointer;
 }
 
 .contacto__form-enviar:disabled {
   cursor: not-allowed;
   opacity: 0.7;
-  transform: none;
 }
 
 .contacto__form-estado {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   min-height: 1.2em;
 }
 
 .contacto__form-estado--exito {
-  color: var(--color-exito);
+  color: var(--color-estado);
 }
 
 .contacto__form-estado--error {
-  color: #dc3545;
+  color: var(--color-error);
 }
 
 @media (max-width: 800px) {
   .contacto__grid {
     grid-template-columns: 1fr;
-    gap: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .contacto__fila {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -755,53 +1222,78 @@ main {
    FOOTER
    ========================================================= */
 .footer {
-  text-align: center;
-  padding: 1.5rem;
-  background-color: var(--color-fondo-alterno);
+  border-top: 1px solid var(--color-borde);
   color: var(--color-texto-suave);
   font-size: 0.875rem;
-  border-top: 1px solid var(--color-borde);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  transition: border-color 0.3s ease;
+}
+
+/* Si la sección anterior ya tiene borde inferior, no duplicarlo */
+.section--alterno:last-child {
+  border-bottom: none;
+}
+
+.footer__contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.5rem;
 }
 
 .footer__copy {
-  margin-bottom: 0.75rem;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
 }
 
 .footer__social {
   display: flex;
-  justify-content: center;
-  gap: 1.25rem;
+  gap: 0.5rem;
 }
 
 .footer__social-link {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-boton);
   color: var(--color-texto-suave);
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .footer__social-link:hover {
   color: var(--color-acento);
+  border-color: var(--color-acento);
 }
 
 .footer__social-icon {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
+}
+
+/* En móvil el chat flotante tapa la esquina derecha del footer:
+   apilamos y dejamos hueco abajo */
+@media (max-width: 600px) {
+  .footer__contenido {
+    flex-direction: column;
+    padding-bottom: 5.5rem;
+  }
 }
 
 /* =========================================================
    PÁGINA DE SERIE (series/*.html)
-   Estilos para la lista de vídeos dentro de cada serie.
    ========================================================= */
 .serie-header {
-  max-width: var(--ancho-maximo);
-  margin: 0 auto;
-  padding: 4rem 1.5rem 1rem;
+  padding-block: 3.5rem 2rem;
 }
 
 .serie-header__volver {
   display: inline-block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  font-family: var(--fuente-mono);
+  font-size: 13px;
   color: var(--color-texto-suave);
 }
 
@@ -810,63 +1302,48 @@ main {
 }
 
 .serie-header__titulo {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  letter-spacing: -0.015em;
+  margin-bottom: 0.4rem;
+}
+
+.serie-header .serie-contador {
+  margin-bottom: 1rem;
 }
 
 .serie-header__descripcion {
   color: var(--color-texto-suave);
-  max-width: 750px;
-  margin-bottom: 1rem;
+  max-width: 720px;
+  margin-bottom: 1.5rem;
 }
 
-.videos__lista {
-  max-width: var(--ancho-maximo);
-  margin: 0 auto;
-  padding: 1rem 1.5rem 4rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.serie-videos {
+  padding-bottom: 5rem;
 }
 
-.video-item {
-  display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  background-color: var(--color-fondo-alterno);
-  border: 1px solid var(--color-borde);
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
-  transition: background-color 0.3s ease, border-color 0.2s ease;
+/* La lista de la página usa la misma .episodios que las tarjetas de la
+   portada, dentro de una .tarjeta, con algo más de aire */
+.serie-videos .tarjeta {
+  padding: 0.5rem 1.5rem;
 }
 
-.video-item:hover {
-  border-color: var(--color-acento);
+.serie-videos .episodios {
+  border-top: none;
 }
 
-.video-item__numero {
-  color: var(--color-acento);
-  font-weight: bold;
-  min-width: 1.5rem;
+.serie-videos .episodio {
+  padding: 14px 0;
+  font-size: 1rem;
 }
 
-.video-item__titulo {
-  color: var(--color-texto);
-}
-
-/* En móvil, cada vídeo de la lista apila el número encima del título */
-@media (max-width: 600px) {
-  .video-item {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
+.serie-videos .episodio:last-child {
+  border-bottom: none;
 }
 
 /* =========================================================
    WIDGET DE CHAT FLOTANTE
-   Burbuja fija en la esquina inferior derecha que abre una
-   ventana de chat conectada al backend en Cloudflare Workers
-   (ver js/chat-widget.js).
+   Burbuja fija abajo a la derecha que abre una ventana de chat
+   conectada al backend en Cloudflare Workers (ver js/chat-widget.js).
    ========================================================= */
 .chat-widget {
   position: fixed;
@@ -876,32 +1353,32 @@ main {
 }
 
 .chat-widget__burbuja {
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   border: none;
   border-radius: 50%;
-  background-color: var(--color-acento);
-  color: #fff;
+  background-color: var(--color-boton-fondo);
+  color: var(--color-boton-texto);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(var(--color-acento-rgb), 0.4);
+  box-shadow: 0 6px 18px rgba(16, 24, 32, 0.3);
   transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 .chat-widget__burbuja:hover {
-  transform: scale(1.06);
+  background-color: var(--color-boton-fondo-hover);
+  transform: scale(1.05);
 }
 
 .chat-widget__icono {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
 }
 
-/* Por defecto (cerrado) se ve el icono de chat; abierto, el de cerrar.
-   Misma idea que el toggle de tema: el JS solo añade/quita la clase
-   "chat-widget--abierto", el CSS decide qué icono mostrar. */
+/* Cerrado: icono de chat; abierto: icono de cerrar. El JS solo
+   añade/quita "chat-widget--abierto", el CSS decide qué se ve. */
 .chat-widget__icono--cerrar {
   display: none;
 }
@@ -917,37 +1394,40 @@ main {
 .chat-widget__ventana {
   position: absolute;
   right: 0;
-  bottom: calc(56px + 1rem);
-  width: 340px;
+  bottom: calc(54px + 1rem);
+  width: 350px;
   max-width: calc(100vw - 2rem);
-  height: 460px;
+  height: 470px;
   max-height: calc(100vh - 8rem);
   background-color: var(--color-fondo);
   border: 1px solid var(--color-borde);
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  /* Oculta por defecto: sin esto, este "display" de autor gana siempre
-     al display:none que el navegador aplica por el atributo [hidden]
-     (una regla de autor prevalece sobre la hoja de estilos user-agent
-     aunque tengan la misma especificidad), y la ventana se vería
-     siempre visible pase lo que pase con [hidden]. */
+  border-radius: var(--radio-tarjeta);
+  box-shadow: 0 14px 40px rgba(16, 24, 32, 0.28);
+  /* Oculta por defecto; la muestra la clase chat-widget--abierto */
   display: none;
   flex-direction: column;
   overflow: hidden;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Misma clase de estado que ya usa el icono de la burbuja: una única
-   fuente de verdad para "abierto/cerrado" en vez de depender de [hidden] */
 .chat-widget--abierto .chat-widget__ventana {
   display: flex;
 }
 
+/* Cabecera con aspecto de barra de terminal */
 .chat-widget__cabecera {
-  padding: 1rem 1.25rem;
-  background-color: var(--color-acento);
-  color: #fff;
-  font-weight: bold;
+  padding: 0.85rem 1.1rem;
+  background-color: var(--terminal-fondo);
+  border-bottom: 1px solid var(--terminal-borde);
+  color: var(--terminal-texto);
+  font-family: var(--fuente-mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.chat-widget__cabecera::before {
+  content: "$ ";
+  color: var(--terminal-acento);
 }
 
 .chat-widget__mensajes {
@@ -960,11 +1440,11 @@ main {
 }
 
 .chat-widget__mensaje {
-  max-width: 80%;
+  max-width: 82%;
   padding: 0.55rem 0.85rem;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 0.9rem;
-  line-height: 1.4;
+  line-height: 1.45;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -972,23 +1452,23 @@ main {
 .chat-widget__mensaje--asistente {
   align-self: flex-start;
   background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde);
   color: var(--color-texto);
-  border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 3px;
 }
 
 .chat-widget__mensaje--usuario {
   align-self: flex-end;
-  background-color: var(--color-acento);
-  color: #fff;
-  border-bottom-right-radius: 4px;
+  background-color: var(--color-boton-fondo);
+  color: var(--color-boton-texto);
+  border-bottom-right-radius: 3px;
 }
 
-/* Error del backend (ej. límite de peticiones alcanzado): se muestra
-   como un mensaje amigable dentro del propio chat, nunca el error crudo */
+/* Error del backend: mensaje amigable dentro del chat */
 .chat-widget__mensaje--error {
   align-self: flex-start;
-  background-color: rgba(220, 53, 69, 0.1);
-  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.08);
+  color: var(--color-error);
   border: 1px solid rgba(220, 53, 69, 0.3);
 }
 
@@ -1038,8 +1518,8 @@ main {
   min-width: 0;
   padding: 0.6rem 0.85rem;
   border: 1px solid var(--color-borde);
-  border-radius: 20px;
-  background-color: var(--color-fondo);
+  border-radius: var(--radio-boton);
+  background-color: var(--color-fondo-alterno);
   color: var(--color-texto);
   font-family: inherit;
   font-size: 0.9rem;
@@ -1055,19 +1535,23 @@ main {
   height: 38px;
   flex-shrink: 0;
   border: none;
-  border-radius: 50%;
-  background-color: var(--color-acento);
-  color: #fff;
+  border-radius: var(--radio-boton);
+  background-color: var(--color-boton-fondo);
+  color: var(--color-boton-texto);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.chat-widget__enviar:hover {
+  background-color: var(--color-boton-fondo-hover);
 }
 
 .chat-widget__enviar svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
 }
 
 .chat-widget__enviar:disabled {
@@ -1075,8 +1559,7 @@ main {
   cursor: default;
 }
 
-/* En móvil, la ventana ocupa casi toda la pantalla en vez de un
-   recuadro flotante pequeño, sin tapar la burbuja ni salirse del viewport */
+/* En móvil la ventana ocupa casi toda la pantalla */
 @media (max-width: 480px) {
   .chat-widget {
     right: 1rem;
@@ -1086,6 +1569,6 @@ main {
   .chat-widget__ventana {
     width: calc(100vw - 2rem);
     height: calc(100vh - 7rem);
-    bottom: calc(56px + 0.75rem);
+    bottom: calc(54px + 0.75rem);
   }
 }

@@ -14,6 +14,11 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
+  <!-- Tipografías: IBM Plex Sans (texto) y JetBrains Mono (detalles de terminal) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
   <!-- Hoja de estilos principal -->
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -24,14 +29,13 @@
   <!-- ======================= -->
   <header class="navbar">
     <nav class="navbar__nav">
-      <a href="#inicio" class="navbar__logo">
-        <img src="assets/img/albert.png" alt="Albert López" class="navbar__logo-img">
+      <a href="#inicio" class="navbar__logo" aria-label="Ir al inicio">
+        <img src="assets/img/albert.png" alt="" class="navbar__logo-img">
+        <span class="navbar__prompt">albert@kernel:~$</span>
       </a>
 
       <div class="navbar__right">
         <ul class="navbar__links">
-          <li><a href="#inicio">Inicio</a></li>
-          <li><a href="#sobre-mi">Sobre mí</a></li>
           <li><a href="#series">Series</a></li>
           <li><a href="#aptitudes">Aptitudes</a></li>
           <li><a href="#formacion">Formación</a></li>
@@ -67,291 +71,322 @@
   <main>
 
     <!-- ======================= -->
-    <!-- 1. SECCIÓN INICIO -->
+    <!-- HERO (presentación + terminal) -->
     <!-- ======================= -->
     <section id="inicio" class="hero">
-      <div class="hero__content">
-        <h1 class="hero__nombre">Albert López Espinosa</h1>
-        <p class="hero__titular">Administrador de Sistemas</p>
-        <a href="#series" class="btn btn--primary">Ver series de vídeos</a>
+      <div class="contenedor hero__grid">
+
+        <div class="hero__texto">
+          <p class="hero__prompt">$ whoami</p>
+          <h1 class="hero__nombre">Albert López Espinosa</h1>
+          <p class="hero__titular">Administrador de Sistemas · on-premise y cloud</p>
+          <p class="hero__bio">
+            Administrador de Sistemas con experiencia en entornos on-premise y una creciente
+            orientación hacia tecnologías cloud. Grabo series de videotutoriales prácticos
+            como forma de autovalidación profesional.
+          </p>
+          <div class="hero__acciones">
+            <a href="#series" class="btn btn--primary">Ver las series</a>
+            <a href="assets/cv/Albert_Lopez_Espinosa_CV.pdf"
+               download="Albert_Lopez_Espinosa_CV.pdf"
+               class="btn btn--outline">Descargar CV</a>
+          </div>
+        </div>
+
+        <!-- Bloque tipo terminal. "Series" y "Vídeos" los rellena js/series.js
+             a partir de js/series-data.js ([data-series-count] y [data-series-total]) -->
+        <div class="terminal">
+          <div class="terminal__barra" aria-hidden="true">
+            <span class="terminal__punto"></span>
+            <span class="terminal__punto"></span>
+            <span class="terminal__punto"></span>
+            <span class="terminal__nombre">bash</span>
+          </div>
+          <div class="terminal__cuerpo">
+            <p class="terminal__linea terminal__comando"><span class="terminal__prompt">$</span> systemctl status portfolio</p>
+            <p class="terminal__linea"><span class="terminal__verde">●</span> portfolio.service — <span class="terminal__verde">activo</span></p>
+            <p class="terminal__linea terminal__sangria"><span class="terminal__suave">Series:</span> <span data-series-count>–</span> · <span class="terminal__suave">Vídeos:</span> <span data-series-total>–</span></p>
+            <p class="terminal__linea terminal__sangria"><span class="terminal__suave">Formación:</span> ASIR <span class="terminal__verde">✓</span></p>
+            <p class="terminal__linea terminal__sangria"><span class="terminal__suave">Certificación:</span> AZ-900 <span class="terminal__verde">✓</span></p>
+            <p class="terminal__linea terminal__sangria terminal__verde">Abierto a nuevas oportunidades</p>
+            <p class="terminal__linea"><span class="terminal__prompt">$</span> <span class="terminal__cursor" aria-hidden="true"></span></p>
+          </div>
+        </div>
+
       </div>
     </section>
 
     <!-- ======================= -->
-    <!-- 2. SECCIÓN SOBRE MÍ -->
+    <!-- 01. SERIES -->
     <!-- ======================= -->
-    <section id="sobre-mi" class="section">
-      <h2 class="section__titulo">Sobre mí</h2>
-      <p class="section__texto">
-        Administrador de Sistemas con experiencia en entornos on-premise y una creciente
-        orientación hacia tecnologías cloud. Grabo series de videotutoriales prácticos
-        como forma de autovalidación profesional. Windows Server 2022 ya completa, y
-        actualmente en curso una nueva serie sobre Ubuntu Server 26.04 LTS.
-      </p>
+    <section id="series" class="section section--alterno">
+      <div class="contenedor">
+        <div class="series__cabecera">
+          <p class="section__etiqueta">01 / series</p>
+          <h2 class="section__titulo">Series</h2>
+          <p class="section__texto">
+            Series de videotutoriales donde documento procesos de administración de sistemas
+            paso a paso.
+          </p>
+        </div>
+
+        <!-- El bloque "Último vídeo" y las tarjetas se generan desde
+             js/series-data.js (ver js/series.js). Para añadir vídeos o
+             series, edita solo ese archivo de datos. -->
+        <div data-serie-destacada></div>
+        <div class="series__grid" data-series-grid></div>
+      </div>
     </section>
 
     <!-- ======================= -->
-    <!-- 3. SECCIÓN SERIES -->
-    <!-- ======================= -->
-    <section id="series" class="section">
-      <h2 class="section__titulo">Series</h2>
-      <p class="section__texto">
-        Series de videotutoriales donde documento procesos de administración de sistemas
-        paso a paso.
-      </p>
-
-      <!-- Las tarjetas se generan desde js/series-data.js (ver js/series.js).
-           Para añadir o modificar una serie, edita ese archivo de datos. -->
-      <div class="series__grid" data-series-grid></div>
-    </section>
-
-    <!-- ======================= -->
-    <!-- 4. SECCIÓN APTITUDES TÉCNICAS -->
+    <!-- 02. APTITUDES TÉCNICAS -->
     <!-- ======================= -->
     <section id="aptitudes" class="section">
-      <h2 class="section__titulo">Aptitudes técnicas</h2>
+      <div class="contenedor">
+        <p class="section__etiqueta">02 / aptitudes</p>
+        <h2 class="section__titulo">Aptitudes técnicas</h2>
 
-      <div class="aptitudes__grid">
+        <div class="aptitudes__grid">
 
-        <!-- Bloque 1: Sistemas y administración -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">Sistemas y administración</h3>
-          <ul class="aptitud-card__lista">
-            <li>
-              Despliegue y administración de servidores Windows Server y Linux
-              <span class="aptitud-card__azure">Azure: Azure Virtual Machines</span>
-            </li>
-            <li>
-              Gestión de dominios mediante Active Directory y políticas de grupo (GPO)
-              <span class="aptitud-card__azure">Azure: Microsoft Entra ID / Intune</span>
-            </li>
-            <li>
-              Configuración de servicios de red (DNS, DHCP) y virtualización con VMware/Hyper-V
-              <span class="aptitud-card__azure">Azure: Azure DNS, Azure VNet</span>
-            </li>
-          </ul>
+          <div class="tarjeta aptitud-card">
+            <h3 class="aptitud-card__titulo">Sistemas y administración</h3>
+            <p class="aptitud-card__texto">
+              Despliegue y administración de Windows Server y Linux · Active Directory y GPO ·
+              DNS, DHCP y virtualización con VMware/Hyper-V
+            </p>
+            <p class="aptitud-card__azure">→ Azure: Virtual Machines · Entra ID · Azure DNS · VNet</p>
+          </div>
+
+          <div class="tarjeta aptitud-card">
+            <h3 class="aptitud-card__titulo">Cloud y desarrollo</h3>
+            <p class="aptitud-card__texto">
+              Integración de IA generativa (API de Claude) · Backend serverless con Cloudflare
+              Workers · Gestión segura de credenciales y CORS · Automatización con Claude Code
+            </p>
+          </div>
+
+          <div class="tarjeta aptitud-card">
+            <h3 class="aptitud-card__titulo">Redes e infraestructura</h3>
+            <p class="aptitud-card__texto">
+              Diseño y configuración de red (routers, switches, puntos de acceso) · Cableado
+              estructurado LAN/WAN
+            </p>
+          </div>
+
+          <div class="tarjeta aptitud-card">
+            <h3 class="aptitud-card__titulo">Soporte técnico y hardware</h3>
+            <p class="aptitud-card__texto">
+              Incidencias hardware/software en producción · Help Desk remoto y presencial ·
+              Montaje y mantenimiento de equipos
+            </p>
+          </div>
+
         </div>
-
-        <!-- Bloque 2: Redes e infraestructura -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">Redes e infraestructura</h3>
-          <ul class="aptitud-card__lista">
-            <li>Diseño y configuración de infraestructura de red (routers, switches, puntos de acceso)</li>
-            <li>Instalación de cableado estructurado LAN/WAN</li>
-          </ul>
-        </div>
-
-        <!-- Bloque 3: Soporte técnico y hardware -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">Soporte técnico y hardware</h3>
-          <ul class="aptitud-card__lista">
-            <li>Resolución de incidencias hardware/software en entornos de producción</li>
-            <li>Soporte técnico Help Desk (remoto y presencial)</li>
-            <li>Montaje y mantenimiento de equipos</li>
-          </ul>
-        </div>
-
-        <!-- Bloque 4: Cloud y desarrollo -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">Cloud y desarrollo</h3>
-          <ul class="aptitud-card__lista">
-            <li>Integración de IA generativa (API de Claude) en aplicaciones web</li>
-            <li>Backend serverless con Cloudflare Workers</li>
-            <li>Gestión segura de credenciales y control de acceso (CORS)</li>
-            <li>Automatización con Claude Code</li>
-          </ul>
-        </div>
-
       </div>
     </section>
 
     <!-- ======================= -->
-    <!-- 5. SECCIÓN FORMACIÓN ACADÉMICA -->
+    <!-- 03. FORMACIÓN ACADÉMICA -->
     <!-- ======================= -->
-    <section id="formacion" class="section">
-      <h2 class="section__titulo">Formación académica</h2>
+    <section id="formacion" class="section section--alterno">
+      <div class="contenedor">
+        <p class="section__etiqueta">03 / formación</p>
+        <h2 class="section__titulo">Formación académica</h2>
 
-      <div class="formacion__grid">
+        <div class="formacion__grid">
 
-        <!-- Tarjeta 1: Grado Superior -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">Grado Superior</h3>
-          <p class="formacion-card__programa">Administración de Sistemas Informáticos en Red</p>
-          <p class="formacion-card__centro">INS La Ferrería</p>
+          <div class="tarjeta formacion-card">
+            <p class="tarjeta__nivel">Grado Superior</p>
+            <h3 class="tarjeta__titulo">Administración de Sistemas Informáticos en Red</h3>
+            <p class="formacion-card__centro">INS La Ferrería</p>
+          </div>
+
+          <div class="tarjeta formacion-card">
+            <p class="tarjeta__nivel">Grado Medio</p>
+            <h3 class="tarjeta__titulo">Sistemas Microinformáticos y Redes</h3>
+            <p class="formacion-card__centro">INS La Ferrería</p>
+          </div>
+
+          <div class="tarjeta formacion-card">
+            <p class="tarjeta__nivel">ESO</p>
+            <h3 class="tarjeta__titulo">Educación Secundaria Obligatoria</h3>
+            <p class="formacion-card__centro">La Salle Montcada</p>
+          </div>
+
         </div>
-
-        <!-- Tarjeta 2: Grado Medio -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">Grado Medio</h3>
-          <p class="formacion-card__programa">Sistemas Microinformáticos y Redes</p>
-          <p class="formacion-card__centro">INS La Ferrería</p>
-        </div>
-
-        <!-- Tarjeta 3: ESO -->
-        <div class="aptitud-card">
-          <h3 class="aptitud-card__titulo">ESO</h3>
-          <p class="formacion-card__programa">Educación Secundaria Obligatoria</p>
-          <p class="formacion-card__centro">La Salle Montcada</p>
-        </div>
-
       </div>
     </section>
 
     <!-- ======================= -->
-    <!-- 6. SECCIÓN CERTIFICACIONES -->
+    <!-- 04. CERTIFICACIONES -->
     <!-- ======================= -->
     <section id="certificaciones" class="section">
-      <h2 class="section__titulo">Certificaciones</h2>
+      <div class="contenedor">
+        <p class="section__etiqueta">04 / certificaciones</p>
+        <h2 class="section__titulo">Certificaciones</h2>
 
-      <div class="certificaciones__grid">
+        <div class="certificaciones__grid">
 
-        <!-- Tarjeta: AZ-900 -->
-        <!-- Para añadir una nueva certificación, copia este bloque <div> y cambia
-             el título y el estado. -->
-        <div class="aptitud-card certificacion-card">
-          <div class="certificacion-card__miniatura">
-            <img
-              src="assets/img/certificado-az900.png"
-              alt="Certificado Microsoft Certified: Azure Fundamentals (AZ-900)"
-              class="certificacion-card__miniatura-img"
-              loading="lazy"
-            />
+          <!-- Tarjeta: AZ-900 (obtenida) -->
+          <div class="tarjeta certificacion-card">
+            <div class="certificacion-card__icono" aria-hidden="true">
+              <!-- Medalla de trazo -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="9" r="6"/>
+                <path d="M9 14.2 7.5 22l4.5-2.6 4.5 2.6-1.5-7.8"/>
+                <path d="m9.6 9 1.6 1.6 3.2-3.2"/>
+              </svg>
+            </div>
+            <div class="certificacion-card__texto">
+              <h3 class="certificacion-card__titulo">Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
+              <p class="certificacion-card__fecha">Obtenida el 24 de septiembre de 2026</p>
+              <a
+                href="https://learn.microsoft.com/api/credentials/share/es-es/albertlopezespinosa/4E774868BFC4583F?sharingId=C2A197EA5175F36A"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="certificacion-card__verificar"
+              >✓ Verificar credencial →</a>
+            </div>
           </div>
-          <h3 class="aptitud-card__titulo">Microsoft Certified: Azure Fundamentals (AZ-900)</h3>
-          <a
-            href="https://learn.microsoft.com/api/credentials/share/es-es/albertlopezespinosa/4E774868BFC4583F?sharingId=C2A197EA5175F36A"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="certificacion-card__verificar"
-          >
-            <svg class="certificacion-card__verificar-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20 6L9 17l-5-5" />
-            </svg>
-            Verificar credencial
-          </a>
-        </div>
 
+          <!-- Tarjeta: siguiente objetivo (borde discontinuo = pendiente).
+               Al obtenerla, sustitúyela por una tarjeta como la de AZ-900. -->
+          <div class="tarjeta objetivo-card">
+            <p class="objetivo-card__etiqueta">Siguiente objetivo</p>
+            <p class="objetivo-card__nombre">AZ-104 · Azure Administrator</p>
+          </div>
+
+        </div>
       </div>
     </section>
 
     <!-- ======================= -->
-    <!-- 7. SECCIÓN CONTACTO -->
+    <!-- 05. CONTACTO -->
     <!-- ======================= -->
-    <section id="contacto" class="section">
-      <h2 class="section__titulo">Contacto</h2>
+    <section id="contacto" class="section section--alterno">
+      <div class="contenedor">
+        <p class="section__etiqueta">05 / contacto</p>
+        <h2 class="section__titulo">Contacto</h2>
 
-      <div class="contacto__grid">
-        <div class="contacto__info">
-          <ul class="contacto__lista">
-            <li>
-              <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                <path d="m22 6-10 7L2 6"/>
-              </svg>
-              <span class="contacto__etiqueta">Email:</span>
-              <a href="mailto:albertlopezespinosa@gmail.com">albertlopezespinosa@gmail.com</a>
-            </li>
-            <li>
-              <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
-                <rect x="2" y="9" width="4" height="12"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-              <span class="contacto__etiqueta">LinkedIn:</span>
-              <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer">
-                linkedin.com/in/alopezespinosa
-              </a>
-            </li>
-            <li>
-              <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <span class="contacto__etiqueta">Ubicación:</span>
-              Montcada i Reixac, Barcelona
-            </li>
-          </ul>
+        <div class="contacto__grid">
+          <div class="tarjeta contacto__info">
+            <ul class="contacto__lista">
+              <li>
+                <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/>
+                  <path d="m22 6-10 7L2 6"/>
+                </svg>
+                <span class="contacto__etiqueta">email</span>
+                <a href="mailto:albertlopezespinosa@gmail.com">albertlopezespinosa@gmail.com</a>
+              </li>
+              <li>
+                <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
+                  <rect x="2" y="9" width="4" height="12"/>
+                  <circle cx="4" cy="4" r="2"/>
+                </svg>
+                <span class="contacto__etiqueta">linkedin</span>
+                <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer">
+                  linkedin.com/in/alopezespinosa
+                </a>
+              </li>
+              <li>
+                <svg class="contacto__icono" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span class="contacto__etiqueta">ubicación</span>
+                <span>Montcada i Reixac, Barcelona</span>
+              </li>
+            </ul>
 
-          <div class="contacto__disponibilidad">
-            <p class="contacto__disponibilidad-estado">
-              <span class="contacto__punto-estado" aria-hidden="true"></span>
-              Abierto a nuevas oportunidades
-            </p>
-            <p class="contacto__disponibilidad-texto">
-              Si tienes un proyecto o posición que encaje con mi perfil, no dudes en escribirme.
-            </p>
+            <div class="contacto__disponibilidad">
+              <p class="contacto__disponibilidad-estado">
+                <span class="contacto__punto-estado" aria-hidden="true"></span>
+                Abierto a nuevas oportunidades
+              </p>
+              <p class="contacto__disponibilidad-texto">
+                Si tienes un proyecto o posición que encaje con mi perfil, no dudes en escribirme.
+              </p>
+            </div>
+
+            <a href="assets/cv/Albert_Lopez_Espinosa_CV.pdf"
+               download="Albert_Lopez_Espinosa_CV.pdf"
+               class="btn btn--primary contacto__cv-btn">
+              Descargar CV
+            </a>
           </div>
 
-          <a href="assets/cv/Albert_Lopez_Espinosa_CV.pdf"
-             download="Albert_Lopez_Espinosa_CV.pdf"
-             class="btn btn--primary contacto__cv-btn">
-            Descargar CV
-          </a>
+          <form id="contacto-form" class="tarjeta contacto__form" novalidate>
+            <!-- Nombre y Email en la misma fila -->
+            <div class="contacto__fila">
+              <div class="contacto__campo">
+                <label for="contacto-nombre">Nombre</label>
+                <input type="text" id="contacto-nombre" name="name" autocomplete="name" required>
+              </div>
+
+              <div class="contacto__campo">
+                <label for="contacto-email">Email</label>
+                <input type="email" id="contacto-email" name="email" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="contacto__campo">
+              <label for="contacto-telefono">Teléfono <span class="contacto__opcional">(opcional)</span></label>
+              <input type="tel" id="contacto-telefono" name="phone" autocomplete="tel">
+            </div>
+
+            <div class="contacto__campo">
+              <label for="contacto-mensaje">Mensaje</label>
+              <textarea id="contacto-mensaje" name="message" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--primary contacto__form-enviar">
+              Enviar mensaje
+            </button>
+
+            <p id="contacto-form-estado" class="contacto__form-estado" role="status" aria-live="polite"></p>
+          </form>
         </div>
-
-        <form id="contacto-form" class="contacto__form" novalidate>
-          <div class="contacto__campo">
-            <label for="contacto-nombre">Nombre</label>
-            <input type="text" id="contacto-nombre" name="name" autocomplete="name" required>
-          </div>
-
-          <div class="contacto__campo">
-            <label for="contacto-email">Email</label>
-            <input type="email" id="contacto-email" name="email" autocomplete="email" required>
-          </div>
-
-          <div class="contacto__campo">
-            <label for="contacto-telefono">Teléfono <span class="contacto__opcional">(opcional)</span></label>
-            <input type="tel" id="contacto-telefono" name="phone" autocomplete="tel">
-          </div>
-
-          <div class="contacto__campo">
-            <label for="contacto-mensaje">Mensaje</label>
-            <textarea id="contacto-mensaje" name="message" rows="5" required></textarea>
-          </div>
-
-          <button type="submit" class="btn btn--primary contacto__form-enviar">
-            Enviar mensaje
-          </button>
-
-          <p id="contacto-form-estado" class="contacto__form-estado" role="status" aria-live="polite"></p>
-        </form>
       </div>
     </section>
 
   </main>
 
   <footer class="footer">
-    <p class="footer__copy">&copy; 2026 Albert López Espinosa</p>
+    <div class="contenedor footer__contenido">
+      <p class="footer__copy">&copy; 2026 Albert López Espinosa</p>
 
-    <div class="footer__social">
-      <a href="mailto:albertlopezespinosa@gmail.com" class="footer__social-link" aria-label="Enviar email">
-        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="4" width="20" height="16" rx="2"/>
-          <path d="m22 6-10 7L2 6"/>
-        </svg>
-      </a>
-      <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer"
-         class="footer__social-link" aria-label="Perfil de LinkedIn">
-        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
-          <rect x="2" y="9" width="4" height="12"/>
-          <circle cx="4" cy="4" r="2"/>
-        </svg>
-      </a>
-      <a href="https://www.youtube.com/@KernelDeAlbert" target="_blank" rel="noopener noreferrer"
-         class="footer__social-link" aria-label="Canal de YouTube">
-        <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33Z"/>
-          <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
-        </svg>
-      </a>
+      <div class="footer__social">
+        <a href="https://www.youtube.com/@KernelDeAlbert" target="_blank" rel="noopener noreferrer"
+           class="footer__social-link" aria-label="Canal de YouTube">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33Z"/>
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/in/alopezespinosa" target="_blank" rel="noopener noreferrer"
+           class="footer__social-link" aria-label="Perfil de LinkedIn">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6Z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+        <a href="https://github.com/albertlopezespinosa" target="_blank" rel="noopener noreferrer"
+           class="footer__social-link" aria-label="Perfil de GitHub">
+          <svg class="footer__social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </footer>
 
@@ -395,7 +430,7 @@
 
   </div>
 
-  <!-- JavaScript principal (scroll suave del menú) -->
+  <!-- JavaScript principal (scroll suave, tema claro/oscuro, nav en móvil) -->
   <script src="js/main.js"></script>
   <!-- Datos de las series (global SERIES) y su renderizado: el orden importa -->
   <script src="js/series-data.js"></script>
