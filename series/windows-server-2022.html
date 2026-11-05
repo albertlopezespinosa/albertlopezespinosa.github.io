@@ -76,93 +76,9 @@
       </a>
     </section>
 
-    <!-- Lista de vídeos de la serie.
-         Para añadir un vídeo nuevo, copia un bloque <li class="video-item"> y
-         cambia el número, el enlace y el título. -->
-    <ol class="videos__lista">
-
-      <li class="video-item">
-        <span class="video-item__numero">1.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=yqFu7tcqLF4&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN"
-           target="_blank" rel="noopener noreferrer">
-          Cómo configurar Active Directory en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">2.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=oQbRMGpqTxA&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=2"
-           target="_blank" rel="noopener noreferrer">
-          Cómo configurar DHCP en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">3.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=yEeeTGqQ_ng&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=3"
-           target="_blank" rel="noopener noreferrer">
-          Cómo configurar DNS en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">4.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=UE1IEw0H2co&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=4"
-           target="_blank" rel="noopener noreferrer">
-          Cómo compartir carpetas en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">5.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=JmQRWjy9Hok&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=5"
-           target="_blank" rel="noopener noreferrer">
-          Cómo realizar, restaurar y validar una copia de seguridad en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">6.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=ZLct-AAB_DU&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=6"
-           target="_blank" rel="noopener noreferrer">
-          Cómo aplicar políticas de grupo (GPO) en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">7.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=JGjwuvPJN_c&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=7"
-           target="_blank" rel="noopener noreferrer">
-          Cómo configurar la redirección de carpetas en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">8.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=a1Cks29_qwc&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=8"
-           target="_blank" rel="noopener noreferrer">
-          Cómo configurar perfiles móviles en Windows Server 2022
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">9.</span>
-        <a class="video-item__titulo"
-           href="https://www.youtube.com/watch?v=MQRrPL2UWbU&list=PLboG42JGoftoaz6fxUZZdFjoFDTb03YpN&index=9"
-           target="_blank" rel="noopener noreferrer">
-          Cómo promover un servidor Windows Server 2022 a controlador de dominio adicional
-        </a>
-      </li>
-
-    </ol>
+    <!-- Lista de vídeos de la serie: se genera desde js/series-data.js
+         (ver js/series.js). Para añadir un vídeo, edita ese archivo de datos. -->
+    <ol class="videos__lista" data-serie-videos="windows-server-2022"></ol>
 
   </main>
 
@@ -200,5 +116,8 @@
   <!-- Esta página no necesita el script de scroll suave (no tiene menú de anclas
        internas), pero lo incluimos por si en el futuro se añade algo interactivo -->
   <script src="../js/main.js"></script>
+  <!-- Datos de las series (global SERIES) y su renderizado: el orden importa -->
+  <script src="../js/series-data.js"></script>
+  <script src="../js/series.js"></script>
 </body>
 </html>

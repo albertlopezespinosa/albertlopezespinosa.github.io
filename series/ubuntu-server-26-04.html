@@ -77,48 +77,9 @@
       </a>
     </section>
 
-    <!-- Lista de vídeos de la serie.
-         Para añadir un vídeo nuevo, copia un bloque <li class="video-item"> y
-         cambia el número, el enlace y el título. -->
-    <ol class="videos__lista">
-
-      <li class="video-item">
-        <span class="video-item__numero">1.</span>
-        <a class="video-item__titulo"
-           href="https://youtu.be/dhWQHKDa-_w"
-           target="_blank" rel="noopener noreferrer">
-          Cómo instalar y preparar Ubuntu Server 26.04 LTS desde cero
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">2.</span>
-        <a class="video-item__titulo"
-           href="https://youtu.be/NRQ6Smun7q0"
-           target="_blank" rel="noopener noreferrer">
-          Cómo acceder por SSH a un servidor Ubuntu desde tu propio equipo
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">3.</span>
-        <a class="video-item__titulo"
-           href="https://youtu.be/JEXMWts-kPE"
-           target="_blank" rel="noopener noreferrer">
-          Cómo convertir un servidor Ubuntu en controlador de dominio con Samba
-        </a>
-      </li>
-
-      <li class="video-item">
-        <span class="video-item__numero">4.</span>
-        <a class="video-item__titulo"
-           href="https://youtu.be/_JGDpNrFeWU"
-           target="_blank" rel="noopener noreferrer">
-          Cómo montar un servidor DHCP con Kea en Ubuntu Server
-        </a>
-      </li>
-
-    </ol>
+    <!-- Lista de vídeos de la serie: se genera desde js/series-data.js
+         (ver js/series.js). Para añadir un vídeo, edita ese archivo de datos. -->
+    <ol class="videos__lista" data-serie-videos="ubuntu-server-26-04"></ol>
 
   </main>
 
@@ -156,5 +117,8 @@
   <!-- Esta página no necesita el script de scroll suave (no tiene menú de anclas
        internas), pero lo incluimos por si en el futuro se añade algo interactivo -->
   <script src="../js/main.js"></script>
+  <!-- Datos de las series (global SERIES) y su renderizado: el orden importa -->
+  <script src="../js/series-data.js"></script>
+  <script src="../js/series.js"></script>
 </body>
 </html>
