@@ -9,8 +9,9 @@
 //     primera serie en curso).
 //   - [data-series-grid]: una tarjeta por serie (en curso primero), con
 //     badge, contador, hasta 4 episodios, "+N" y el próximo vídeo.
-//   - [data-series-count] / [data-series-total]: nº de series y de vídeos
-//     (los usa el bloque de terminal del hero).
+//   - [data-terminal-estado]: líneas de "systemctl status portfolio"
+//     (terminal del hero y mini terminal flotante; una sola función).
+//   - [data-series-count] / [data-series-total]: nº de series y de vídeos.
 //
 // En series/*.html:
 //   - [data-serie-videos="<id>"]: lista completa de episodios de la serie.
@@ -287,6 +288,48 @@
     });
   }
 
+  // ---------- Terminal: líneas de "systemctl status portfolio" ----------
+
+  // Una línea del terminal a partir de trozos [texto, clase opcional].
+  // Todo con textContent.
+  function lineaTerminal(clases, trozos) {
+    const p = crear('p', 'terminal__linea' + (clases ? ' ' + clases : ''));
+    trozos.forEach(function (trozo) {
+      if (trozo[1]) {
+        p.appendChild(crear('span', trozo[1], trozo[0]));
+      } else {
+        p.appendChild(document.createTextNode(trozo[0]));
+      }
+    });
+    return p;
+  }
+
+  // Única fuente de las líneas de estado: la usan el hero y la burbuja.
+  // Series y Vídeos salen de SERIES; el resto son datos del perfil.
+  function crearLineasEstado() {
+    const fragmento = document.createDocumentFragment();
+    const lineas = [
+      lineaTerminal('terminal__comando', [['$', 'terminal__prompt'], [' systemctl status portfolio']]),
+      lineaTerminal('', [['●', 'terminal__verde'], [' portfolio.service — '], ['activo', 'terminal__verde']]),
+      lineaTerminal('terminal__sangria', [
+        ['Series:', 'terminal__suave'], [' ' + SERIES.length + ' · '],
+        ['Vídeos:', 'terminal__suave'], [' ' + totalVideos()]
+      ]),
+      lineaTerminal('terminal__sangria', [['Formación:', 'terminal__suave'], [' ASIR '], ['✓', 'terminal__verde']]),
+      lineaTerminal('terminal__sangria', [['Certificación:', 'terminal__suave'], [' AZ-900 '], ['✓', 'terminal__verde']]),
+      lineaTerminal('terminal__sangria terminal__verde', [['Abierto a nuevas oportunidades']])
+    ];
+    lineas.forEach(function (linea) { fragmento.appendChild(linea); });
+    return fragmento;
+  }
+
+  function renderizarEstadoTerminal() {
+    document.querySelectorAll('[data-terminal-estado]').forEach(function (el) {
+      el.textContent = '';
+      el.appendChild(crearLineasEstado());
+    });
+  }
+
   // ---------- Contadores sueltos ----------
 
   function renderizarContadores() {
@@ -304,6 +347,7 @@
     });
   }
 
+  renderizarEstadoTerminal();
   renderizarDestacado();
   renderizarTarjetas();
   renderizarPaginasSerie();
