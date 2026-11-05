@@ -184,6 +184,70 @@
 
   // ---------- index.html: bloque "Último vídeo" ----------
 
+  // ID del vídeo a partir de su URL. Acepta los dos formatos de
+  // series-data.js: https://youtu.be/ID y
+  // https://www.youtube.com/watch?v=ID (con o sin &list=..., &index=...).
+  // Devuelve null si no lo encuentra.
+  function idVideoYoutube(url) {
+    let u;
+    try {
+      u = new URL(url);
+    } catch (e) {
+      return null;
+    }
+
+    const host = u.hostname.replace(/^www\./, '');
+    let id = null;
+    if (host === 'youtu.be') {
+      id = u.pathname.split('/')[1];
+    } else if (host === 'youtube.com' && u.pathname === '/watch') {
+      id = u.searchParams.get('v');
+    }
+
+    // Los IDs de YouTube son 11 caracteres de [A-Za-z0-9_-]
+    return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+  }
+
+  function urlMiniaturaYoutube(id, calidad) {
+    return 'https://img.youtube.com/vi/' + id + '/' + calidad + '.jpg';
+  }
+
+  // Imagen del bloque: miniatura del vídeo en YouTube, con reservas.
+  //   maxresdefault -> hqdefault -> carátula de la serie
+  // Si maxresdefault no existe, YouTube a veces no da error sino una
+  // imagen gris de 120x90: en onload se trata también como fallo.
+  function crearMiniaturaVideo(video, serie) {
+    const img = crear('img');
+    img.alt = 'Miniatura del vídeo: ' + video.titulo;
+
+    const id = idVideoYoutube(video.url);
+    const fuentes = id
+      ? [urlMiniaturaYoutube(id, 'maxresdefault'), urlMiniaturaYoutube(id, 'hqdefault')]
+      : [];
+    let siguienteFuente = 0;
+
+    function probarSiguiente() {
+      if (siguienteFuente < fuentes.length) {
+        img.src = fuentes[siguienteFuente++];
+        return;
+      }
+      // Última reserva: la carátula. Se quitan los manejadores para no
+      // entrar en bucle si también falla.
+      img.onload = null;
+      img.onerror = null;
+      img.classList.remove('destacado__img--youtube');
+      img.src = ruta(serie.caratula);
+    }
+
+    if (id) img.classList.add('destacado__img--youtube');
+    img.onerror = probarSiguiente;
+    img.onload = function () {
+      if (img.naturalWidth === 120) probarSiguiente();
+    };
+    probarSiguiente();
+    return img;
+  }
+
   function renderizarDestacado() {
     const contenedor = document.querySelector('[data-serie-destacada]');
     if (!contenedor) return;
@@ -199,10 +263,7 @@
     const bloque = enlaceExterno(crear('a', 'destacado'), video.url);
 
     const miniatura = crear('div', 'destacado__miniatura');
-    const img = crear('img');
-    img.src = ruta(serie.caratula);
-    img.alt = '';
-    miniatura.appendChild(img);
+    miniatura.appendChild(crearMiniaturaVideo(video, serie));
     const play = crear('span', 'destacado__play');
     play.setAttribute('aria-hidden', 'true');
     play.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>';

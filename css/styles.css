@@ -335,7 +335,7 @@ main {
 /* =========================================================
    ETIQUETAS MONO REUTILIZABLES
    ========================================================= */
-/* "01 / series", "02 / aptitudes"... encima del título de sección */
+/* "serie / ubuntu-server-26-04"... encima del título de las páginas de series/ */
 .section__etiqueta {
   font-family: var(--fuente-mono);
   font-size: 13px;
@@ -550,15 +550,24 @@ main {
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Título de sección con forma de ruta: "~/series". El h2 lleva un
+   aria-label con el nombre legible para los lectores de pantalla.
+   Peso 500: la monoespaciada se ve más pesada que IBM Plex Sans. */
 .section__titulo {
+  font-family: var(--fuente-mono);
   font-size: 2rem;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: var(--color-texto);
   margin-bottom: 0.75rem;
+}
+
+/* "~/" en el color de acento */
+.section__titulo-ruta {
+  color: var(--color-acento);
 }
 
 .section__texto {
   color: var(--color-texto-suave);
-  max-width: 680px;
 }
 
 @media (max-width: 600px) {
@@ -737,6 +746,15 @@ main {
   height: 102%;
   object-fit: cover;
   transform: translateY(-2%);
+}
+
+/* Miniatura de YouTube en "Último vídeo": no tiene la franja de las
+   carátulas, así que se anula el ajuste anterior. cover mantiene el
+   16:9 y recorta las franjas negras de hqdefault (4:3). Si se cae a la
+   carátula, series.js quita la clase y vuelve a aplicarse el ajuste. */
+.destacado__miniatura img.destacado__img--youtube {
+  height: 100%;
+  transform: none;
 }
 
 .serie-card__contenido {
